@@ -1,43 +1,144 @@
-import { FC } from "react";
+import { FC, useEffect, useRef, useState } from "react";
 import { Box, Button, Stack, Typography } from "@mui/material";
 import { Link } from "react-router-dom";
 import { RightArrow } from "../../../../assets/Icons";
 import { useThemeMode } from "../../../../theme/theme";
 
-// ── Design tokens ─────────────────────────────────────────────────────────────
-// Dark  → client-requested deep navy + white palette
-// Light → clean white + navy (cleanly inverted mirror)
+// ── Design tokens (your exact palette) ───────────────────────────────────────
 const getTokens = (isDark: boolean) => ({
-  bg:               isDark ? "#000c2e" : "#f0f4ff",
-  border:           isDark ? "#1a2a5e" : "#c2d0f0",
-  eyebrow:          isDark ? "#5a7ab5" : "#5a7ab5",
-  headline:         isDark ? "#ffffff" : "#000c2e",
-  headlineStroke:   isDark ? "rgba(255,255,255,0.18)" : undefined,
-  headlineFaded:    isDark ? "#2e4a8a" : "#a0aec0",
-  subText:          isDark ? "#6b7fa8" : "#3a4e78",
-  statsDivider:     isDark ? "#1a2a5e" : "#c2d0f0",
-  statsNum:         isDark ? "#ffffff" : "#000c2e",
-  statsLabel:       isDark ? "#5a7ab5" : "#5a7ab5",
-  gridLine:         isDark ? "rgba(74,158,255,0.04)" : "rgba(0,40,160,0.04)",
+  bg:               isDark ? "#161616" : "#FFF4E3",
+  border:           isDark ? "#2a2a2a" : "#d9c9b0",
+  eyebrow:          isDark ? "#BBC0C6" : "#4a4a6a",
+  headline:         isDark ? "#FFF4E3" : "#001932",
+  headlineStroke:   isDark ? "rgba(255,244,227,0.18)" : undefined,
+  headlineFaded:    isDark ? "#3a3a3a" : "#BBC0C6",
+  subText:          isDark ? "#BBC0C6" : "#4a4a6a",
+  statsDivider:     isDark ? "#2a2a2a" : "#d9c9b0",
+  statsNum:         isDark ? "#FFF4E3" : "#001932",
+  statsLabel:       isDark ? "#BBC0C6" : "#4a4a6a",
+  gridLine:         isDark ? "rgba(187,192,198,0.03)" : "rgba(0,25,50,0.04)",
   radialGlow:       isDark
-    ? "radial-gradient(ellipse at center, rgba(74,158,255,0.08) 0%, transparent 65%)"
-    : "radial-gradient(ellipse at center, rgba(0,40,160,0.07) 0%, transparent 65%)",
-  // Primary CTA
-  ctaPrimaryBg:     isDark ? "#ffffff" : "#000c2e",
-  ctaPrimaryText:   isDark ? "#000c2e" : "#ffffff",
-  ctaPrimaryHover:  isDark ? "#e0e8ff" : "#0d2255",
-  ctaPrimaryIcon:   isDark ? "invert(1)" : "none",
-  // Secondary CTA
-  ctaSecBorder:     isDark ? "#1a2a5e" : "#c2d0f0",
-  ctaSecText:       isDark ? "#6b7fa8" : "#3a4e78",
-  ctaSecHoverText:  isDark ? "#ffffff" : "#000c2e",
-  ctaSecHoverBorder:isDark ? "#4a7fff" : "#7a9ad8",
+    ? "radial-gradient(ellipse at center, rgba(187,192,198,0.06) 0%, transparent 65%)"
+    : "radial-gradient(ellipse at center, rgba(0,25,50,0.06) 0%, transparent 65%)",
+  ctaPrimaryBg:     isDark ? "#FFF4E3" : "#001932",
+  ctaPrimaryText:   isDark ? "#001932" : "#FFF4E3",
+  ctaPrimaryHover:  isDark ? "#e0d8cc" : "#0a2a4a",
+  ctaPrimaryIcon:   isDark ? "none"    : "invert(1)",
+  ctaSecBorder:     isDark ? "#2a2a2a" : "#d9c9b0",
+  ctaSecText:       isDark ? "#BBC0C6" : "#4a4a6a",
+  ctaSecHoverText:  isDark ? "#FFF4E3" : "#001932",
+  ctaSecHoverBorder:isDark ? "#BBC0C6" : "#001932",
 });
 
+// ── Tiny hook: fires once when element enters viewport ────────────────────────
+function useInView(threshold = 0.15) {
+  const ref  = useRef<HTMLDivElement>(null);
+  const [visible, setVisible] = useState(false);
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const obs = new IntersectionObserver(
+      ([entry]) => { if (entry.isIntersecting) { setVisible(true); obs.disconnect(); } },
+      { threshold },
+    );
+    obs.observe(el);
+    return () => obs.disconnect();
+  }, [threshold]);
+  return { ref, visible };
+}
+
+// ── Animated reveal wrapper ───────────────────────────────────────────────────
+interface RevealProps {
+  children: React.ReactNode;
+  delay?: number;   // ms
+  from?: "bottom" | "left" | "right" | "scale";
+}
+const Reveal: FC<RevealProps> = ({ children, delay = 0, from = "bottom" }) => {
+  const { ref, visible } = useInView();
+  const base = {
+    bottom: { transform: "translateY(28px)", opacity: 0 },
+    left:   { transform: "translateX(-28px)", opacity: 0 },
+    right:  { transform: "translateX(28px)",  opacity: 0 },
+    scale:  { transform: "scale(0.94)",        opacity: 0 },
+  }[from];
+  return (
+    <Box
+      ref={ref}
+      sx={{
+        transition: `opacity 0.75s cubic-bezier(0.22,1,0.36,1) ${delay}ms,
+                     transform 0.75s cubic-bezier(0.22,1,0.36,1) ${delay}ms`,
+        ...(visible ? { opacity: 1, transform: "none" } : base),
+      }}
+    >
+      {children}
+    </Box>
+  );
+};
+
+// ── Animated counter ──────────────────────────────────────────────────────────
+const AnimatedNumber: FC<{ target: string; color: string; visible: boolean; delay: number }> = ({
+  target, color, visible, delay,
+}) => {
+  const [display, setDisplay] = useState("0");
+
+  // Derived values computed outside the effect so they are stable references
+  // and can be safely listed in the dependency array.
+  const numMatch   = /^\d+/.test(target);
+  const num        = numMatch ? parseInt(target, 10) : 0;
+  const suffix     = target.replace(/^\d+/, ""); // e.g. "+" or " wks" or ""
+
+  useEffect(() => {
+    // Non-numeric targets (e.g. "6 wks" won't parse cleanly) — show as-is.
+    if (!visible) return;
+    if (!numMatch) { setDisplay(target); return; }
+
+    let rafId: number;
+    let start: number | null = null;
+    const duration = 1200;
+
+    const step = (ts: number) => {
+      if (!start) start = ts;
+      const prog  = Math.min((ts - start) / duration, 1);
+      const eased = 1 - Math.pow(1 - prog, 3);
+      setDisplay(`${Math.round(eased * num)}${suffix}`);
+      if (prog < 1) { rafId = requestAnimationFrame(step); }
+    };
+
+    const timer = setTimeout(() => { rafId = requestAnimationFrame(step); }, delay);
+
+    // Cleanup: cancel both the timeout and any pending RAF
+    return () => {
+      clearTimeout(timer);
+      cancelAnimationFrame(rafId);
+    };
+  }, [visible, target, delay, numMatch, num, suffix]);
+
+  return (
+    <Typography sx={{
+      fontSize: { xs: "22px", sm: "28px" }, fontWeight: 500,
+      color, lineHeight: 1,
+      transition: "color 0.4s ease",
+      fontVariantNumeric: "tabular-nums",
+    }}>
+      {display}
+    </Typography>
+  );
+};
+
+// ── Main component ────────────────────────────────────────────────────────────
 export const SecondGeneralSection: FC = () => {
   const { mode } = useThemeMode();
   const isDark = mode === "dark";
   const T = getTokens(isDark);
+
+  // Stats counter fires once when the strip enters view
+  const { ref: statsRef, visible: statsVisible } = useInView(0.3);
+
+  const STATS = [
+    { num: "50+",   label: "Clients shipped"   },
+    { num: "12+",   label: "Countries"         },
+    { num: "6 wks", label: "Avg. MVP delivery" },
+  ];
 
   return (
     <Box
@@ -48,7 +149,7 @@ export const SecondGeneralSection: FC = () => {
         overflow: "hidden",
         px: { xs: "24px", sm: "48px", lg: "80px" },
         py: { xs: "100px", sm: "130px", md: "160px" },
-        transition: "background-color 0.4s ease, border-color 0.4s ease",
+        transition: "background-color 0.5s ease, border-color 0.5s ease",
       }}
     >
       {/* Background grid */}
@@ -69,118 +170,154 @@ export const SecondGeneralSection: FC = () => {
         width: "600px", height: "400px",
         background: T.radialGlow,
         zIndex: 0, pointerEvents: "none",
+        transition: "background 0.5s ease",
       }} />
 
       {/* Content */}
       <Stack alignItems="center" textAlign="center" gap={4} sx={{ position: "relative", zIndex: 2 }}>
 
         {/* Eyebrow */}
-        <Typography sx={{
-          fontSize: "11px", color: T.eyebrow,
-          letterSpacing: "0.08em", textTransform: "uppercase", fontWeight: 500,
-          transition: "color 0.4s ease",
-        }}>
-          ✦ Let's talk
-        </Typography>
+        <Reveal delay={0}>
+          <Typography sx={{
+            fontSize: "11px", color: T.eyebrow,
+            letterSpacing: "0.10em", textTransform: "uppercase", fontWeight: 500,
+            transition: "color 0.4s ease",
+          }}>
+            ✦ Let's talk
+          </Typography>
+        </Reveal>
 
-        {/* Headline */}
+        {/* Headline block */}
         <Box>
-          <Typography sx={{
-            fontSize: { xs: "36px", sm: "52px", md: "72px", lg: "88px" },
-            fontWeight: 500, color: T.headline,
-            lineHeight: 0.95, letterSpacing: "-0.03em",
-            fontFamily: "'Georgia', serif",
-            transition: "color 0.4s ease",
-          }}>
-            Ready to ship
-          </Typography>
-          <Typography sx={{
-            fontSize: { xs: "36px", sm: "52px", md: "72px", lg: "88px" },
-            fontWeight: 500, lineHeight: 0.95, letterSpacing: "-0.03em",
-            fontFamily: "'Georgia', serif",
-            // Dark: hollow stroke text. Light: solid muted navy tone.
-            ...(isDark
-              ? { color: "transparent", WebkitTextStroke: `1px ${T.headlineStroke}` }
-              : { color: T.headlineFaded }
-            ),
-            transition: "color 0.4s ease",
-          }}>
-            production AI?
-          </Typography>
+          <Reveal delay={80}>
+            <Typography sx={{
+              fontSize: { xs: "36px", sm: "52px", md: "72px", lg: "88px" },
+              fontWeight: 600, color: T.headline,
+              lineHeight: 0.95, letterSpacing: "-0.03em",
+              fontFamily: "'Georgia', 'Times New Roman', serif",
+              transition: "color 0.4s ease",
+            }}>
+              Ready to ship
+            </Typography>
+          </Reveal>
+
+          <Reveal delay={160}>
+            <Typography sx={{
+              fontSize: { xs: "36px", sm: "52px", md: "72px", lg: "88px" },
+              fontWeight: 600, lineHeight: 0.95, letterSpacing: "-0.03em",
+              fontFamily: "'Georgia', 'Times New Roman', serif",
+              ...(isDark
+                ? { color: "transparent", WebkitTextStroke: `1.5px ${T.headlineStroke}` }
+                : { color: T.headlineFaded }
+              ),
+              transition: "color 0.4s ease",
+            }}>
+              production AI?
+            </Typography>
+          </Reveal>
         </Box>
 
         {/* Subtext */}
-        <Typography sx={{
-          fontSize: { xs: "14px", sm: "16px" }, color: T.subText,
-          maxWidth: "440px", lineHeight: 1.75,
-          transition: "color 0.4s ease",
-        }}>
-          We build architecture first, ship with discipline, and deliver
-          production-grade AI systems that matter. Let's start with a
-          conversation.
-        </Typography>
+        <Reveal delay={240}>
+          <Typography sx={{
+            fontSize: { xs: "14px", sm: "16px" }, color: T.subText,
+            maxWidth: "440px", lineHeight: 1.8,
+            fontFamily: "'Georgia', serif", fontStyle: "italic",
+            transition: "color 0.4s ease",
+          }}>
+            We build architecture first, ship with discipline, and deliver
+            production-grade AI systems that matter. Let's start with a
+            conversation.
+          </Typography>
+        </Reveal>
 
         {/* CTAs */}
-        <Stack direction={{ xs: "column", sm: "row" }} gap={2} alignItems="center">
-          <Button
-            component={Link} to="/contact" endIcon={<RightArrow />}
-            sx={{
-              px: "24px", py: "12px",
-              backgroundColor: T.ctaPrimaryBg,
-              color: T.ctaPrimaryText,
-              fontSize: "14px", fontWeight: 500,
-              textTransform: "none", borderRadius: "8px",
-              letterSpacing: "0.01em",
-              transition: "background-color 0.3s ease",
-              "&:hover": { backgroundColor: T.ctaPrimaryHover },
-              "& .MuiButton-endIcon svg": { filter: T.ctaPrimaryIcon },
-            }}
-          >
-            Contact Us Now
-          </Button>
-          <Button
-            component={Link} to="/about"
-            sx={{
-              px: "24px", py: "12px",
-              backgroundColor: "transparent",
-              color: T.ctaSecText,
-              fontSize: "14px", fontWeight: 400,
-              textTransform: "none", borderRadius: "8px",
-              border: `0.5px solid ${T.ctaSecBorder}`,
-              letterSpacing: "0.01em",
-              transition: "color 0.2s ease, border-color 0.2s ease",
-              "&:hover": { color: T.ctaSecHoverText, borderColor: T.ctaSecHoverBorder },
-            }}
-          >
-            Learn about us
-          </Button>
-        </Stack>
+        <Reveal delay={320} from="scale">
+          <Stack direction={{ xs: "column", sm: "row" }} gap={2} alignItems="center">
+            <Button
+              component={Link} to="/contact" endIcon={<RightArrow />}
+              sx={{
+                px: "28px", py: "13px",
+                backgroundColor: T.ctaPrimaryBg,
+                color:           T.ctaPrimaryText,
+                fontSize: "14px", fontWeight: 500,
+                textTransform: "none", borderRadius: "8px",
+                letterSpacing: "0.01em",
+                transition: "background-color 0.25s ease, transform 0.2s ease, box-shadow 0.2s ease",
+                boxShadow: isDark
+                  ? "0 4px 20px rgba(255,244,227,0.12)"
+                  : "0 4px 20px rgba(0,25,50,0.18)",
+                "&:hover": {
+                  backgroundColor: T.ctaPrimaryHover,
+                  transform: "translateY(-2px)",
+                  boxShadow: isDark
+                    ? "0 8px 32px rgba(255,244,227,0.18)"
+                    : "0 8px 32px rgba(0,25,50,0.26)",
+                },
+                "&:active": { transform: "scale(0.97)" },
+                "& .MuiButton-endIcon svg": { filter: T.ctaPrimaryIcon },
+              }}
+            >
+              Contact Us Now
+            </Button>
 
-        {/* Social proof strip */}
-        <Box sx={{
-          mt: "16px", pt: "32px",
-          borderTop: `0.5px solid ${T.statsDivider}`,
-          width: "100%", maxWidth: "560px",
-          display: "flex", justifyContent: "center",
-          gap: { xs: "28px", sm: "48px" },
-          transition: "border-color 0.4s ease",
-        }}>
-          {[
-            { num: "50+",    label: "Clients shipped"    },
-            { num: "12+",    label: "Countries"          },
-            { num: "6 wks",  label: "Avg. MVP delivery"  },
-          ].map(({ num, label }) => (
-            <Box key={label} textAlign="center">
-              <Typography sx={{
-                fontSize: { xs: "18px", sm: "24px" }, fontWeight: 500,
-                color: T.statsNum, lineHeight: 1,
-                transition: "color 0.4s ease",
-              }}>
-                {num}
-              </Typography>
+            <Button
+              component={Link} to="/about"
+              sx={{
+                px: "28px", py: "13px",
+                backgroundColor: "transparent",
+                color: T.ctaSecText,
+                fontSize: "14px", fontWeight: 400,
+                textTransform: "none", borderRadius: "8px",
+                border: `0.5px solid ${T.ctaSecBorder}`,
+                letterSpacing: "0.01em",
+                transition: "color 0.2s ease, border-color 0.2s ease, transform 0.2s ease",
+                "&:hover": {
+                  color:       T.ctaSecHoverText,
+                  borderColor: T.ctaSecHoverBorder,
+                  transform:   "translateY(-2px)",
+                },
+                "&:active": { transform: "scale(0.97)" },
+              }}
+            >
+              Learn about us
+            </Button>
+          </Stack>
+        </Reveal>
+
+        {/* Social proof strip — animated counters */}
+        <Box
+          ref={statsRef}
+          sx={{
+            mt: "16px", pt: "32px",
+            borderTop: `0.5px solid ${T.statsDivider}`,
+            width: "100%", maxWidth: "560px",
+            display: "flex", justifyContent: "center",
+            gap: { xs: "28px", sm: "56px" },
+            transition: "border-color 0.4s ease",
+          }}
+        >
+          {STATS.map(({ num, label }, i) => (
+            <Box
+              key={label}
+              textAlign="center"
+              sx={{
+                opacity:   statsVisible ? 1 : 0,
+                transform: statsVisible ? "translateY(0)" : "translateY(16px)",
+                transition: `opacity 0.6s cubic-bezier(0.22,1,0.36,1) ${i * 100}ms,
+                             transform 0.6s cubic-bezier(0.22,1,0.36,1) ${i * 100}ms`,
+              }}
+            >
+              <AnimatedNumber
+                target={num}
+                color={T.statsNum}
+                visible={statsVisible}
+                delay={i * 120}
+              />
               <Typography sx={{
                 fontSize: "11px", color: T.statsLabel,
-                mt: "6px", letterSpacing: "0.04em",
+                mt: "6px", letterSpacing: "0.06em",
+                textTransform: "uppercase",
                 transition: "color 0.4s ease",
               }}>
                 {label}
@@ -188,6 +325,7 @@ export const SecondGeneralSection: FC = () => {
             </Box>
           ))}
         </Box>
+
       </Stack>
     </Box>
   );

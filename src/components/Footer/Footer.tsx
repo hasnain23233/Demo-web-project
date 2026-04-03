@@ -52,58 +52,59 @@ const SOCIAL_ITEMS = [
   { key: "insta",    href: "https://instagram.com" },
 ];
 
-// ── Design tokens ─────────────────────────────────────────────────────────────
-// Dark  → client-requested deep navy + white palette
-// Light → clean white + navy (cleanly inverted mirror)
+// ── Design tokens — aligned to your palette ───────────────────────────────────
+// Dark:  Black (#161616) bg, Cream (#FFF4E3) text, Grey Cloud (#BBC0C6) secondary
+// Light: Cream (#FFF4E3) bg, Midnight (#001932) text, warm tan (#d9c9b0) borders
 const getTokens = (isDark: boolean) => ({
-  bg:                   isDark ? "#000c2e" : "#f0f4ff",
-  border:               isDark ? "#1a2a5e" : "#c2d0f0",
-  tagline:              isDark ? "#6b7fa8" : "#3a4e78",
-  // Column labels & copyright
-  colLabel:             isDark ? "#ffffff" : "#000c2e",
-  copyright:            isDark ? "#5a7ab5" : "#5a7ab5",
+  // Layout
+  bg:                 isDark ? "#161616"              : "#FFF4E3",
+  border:             isDark ? "#2a2a2a"              : "#d9c9b0",   // near-black / warm tan
+  // Text hierarchy
+  tagline:            isDark ? "#BBC0C6"              : "#4a4a6a",   // Grey Cloud / slate
+  colLabel:           isDark ? "#FFF4E3"              : "#001932",   // Cream / Midnight
+  copyright:          isDark ? "#BBC0C6"              : "#4a4a6a",
   // Nav links
-  linkColor:            isDark ? "#5a7ab5" : "#3a4e78",
-  linkHover:            isDark ? "#ffffff" : "#000c2e",
-  // Social buttons
-  socialBorder:         isDark ? "#1a2a5e" : "#c2d0f0",
-  socialHoverBorder:    isDark ? "#4a7fff" : "#7a9ad8",
-  socialHoverBg:        isDark ? "#020e38" : "#e0eaff",
-  socialIconFilter:     isDark ? "brightness(10)" : "brightness(0)",
-  socialOpacity:        isDark ? 0.35 : 0.5,
+  linkColor:          isDark ? "#BBC0C6"              : "#4a4a6a",
+  linkHover:          isDark ? "#FFF4E3"              : "#001932",
+  // Social
+  socialBorder:       isDark ? "#2a2a2a"              : "#d9c9b0",
+  socialHoverBorder:  isDark ? "#BBC0C6"              : "#001932",
+  socialHoverBg:      isDark ? "#1e1e1e"              : "#f0e8da",
+  socialIconFilter:   isDark ? "invert(1) brightness(0.85)" : "brightness(0)",
+  socialOpacity:      isDark ? 0.7                    : 0.55,
   // Newsletter input
-  inputBg:              isDark ? "#020e38" : "#ffffff",
-  inputBorder:          isDark ? "#1a2a5e" : "#c2d0f0",
-  inputFocusBorder:     isDark ? "#4a7fff" : "#7a9ad8",
-  inputColor:           isDark ? "#ffffff" : "#000c2e",
-  placeholder:          isDark ? "#2e4a8a" : "#a0aec0",
-  inputDivider:         isDark ? "#1a2a5e" : "#c2d0f0",
-  inputShadow:          isDark ? "none" : "0 2px 8px rgba(0,40,160,0.05)",
-  newsletterDesc:       isDark ? "#6b7fa8" : "#3a4e78",
-  newsletterDisclaim:   isDark ? "#2e4a8a" : "#9aaac0",
+  inputBg:            isDark ? "#1e1e1e"              : "#FFFFFF",
+  inputBorder:        isDark ? "#2a2a2a"              : "#d9c9b0",
+  inputFocusBorder:   isDark ? "#BBC0C6"              : "#001932",
+  inputColor:         isDark ? "#FFF4E3"              : "#001932",
+  placeholder:        isDark ? "#3a3a3a"              : "#BBC0C6",
+  inputDivider:       isDark ? "#2a2a2a"              : "#d9c9b0",
+  inputShadow:        isDark ? "none"                 : "0 2px 8px rgba(0,25,50,0.05)",
+  newsletterDesc:     isDark ? "#BBC0C6"              : "#4a4a6a",
+  newsletterDisclaim: isDark ? "#3a3a3a"              : "#BBC0C6",
   // Send button
-  sendActiveBg:         isDark ? "#ffffff" : "#000c2e",
-  sendActiveIcon:       isDark ? "#000c2e" : "#ffffff",
-  sendActiveHover:      isDark ? "#e0e8ff" : "#0d2255",
-  sendIdleIcon:         isDark ? "#2e4a8a" : "#a0aec0",
-  sendIdleHoverBg:      isDark ? "#020e38" : "#eef3fc",
+  sendActiveBg:       isDark ? "#FFF4E3"              : "#001932",
+  sendActiveIcon:     isDark ? "#001932"              : "#FFF4E3",
+  sendActiveHover:    isDark ? "#e0d8cc"              : "#0a2a4a",
+  sendIdleIcon:       isDark ? "#3a3a3a"              : "#BBC0C6",
+  sendIdleHoverBg:    isDark ? "#1e1e1e"              : "#f0e8da",
   // Ghost wordmark
-  wordmarkColor:        isDark ? "#1a2a5e" : "transparent",
-  wordmarkStroke:       isDark ? "#1a2a5e" : "#c2d0f0",
-  // Bottom bar legal links
-  legalLink:            isDark ? "#2e4a8a" : "#8a9ab8",
-  legalLinkHover:       isDark ? "#ffffff" : "#000c2e",
+  wordmarkColor:      isDark ? "#1e1e1e"              : "transparent",
+  wordmarkStroke:     isDark ? "#2a2a2a"              : "#d9c9b0",
+  // Bottom bar
+  legalLink:          isDark ? "#3a3a3a"              : "#BBC0C6",
+  legalLinkHover:     isDark ? "#FFF4E3"              : "#001932",
 });
 
 // ─── Sub-components ───────────────────────────────────────────────────────────
 
-interface FooterLinkProps { label: string; to: string; tokens: ReturnType<typeof getTokens> }
-const FooterLink: FC<FooterLinkProps> = ({ label, to, tokens: T }) => (
+interface FooterLinkProps { label: string; to: string; T: ReturnType<typeof getTokens> }
+const FooterLink: FC<FooterLinkProps> = ({ label, to, T }) => (
   <Box
     component={RouterLink}
     to={to}
     sx={{
-      fontSize: "14px",
+      fontSize: "13px",
       color: T.linkColor,
       textDecoration: "none",
       lineHeight: 1,
@@ -116,12 +117,15 @@ const FooterLink: FC<FooterLinkProps> = ({ label, to, tokens: T }) => (
   </Box>
 );
 
-interface ColLabelProps { children: string; tokens: ReturnType<typeof getTokens> }
-const ColLabel: FC<ColLabelProps> = ({ children, tokens: T }) => (
+interface ColLabelProps { children: string; T: ReturnType<typeof getTokens> }
+const ColLabel: FC<ColLabelProps> = ({ children, T }) => (
   <Typography sx={{
-    fontSize: "11px", fontWeight: 600,
+    fontSize: "10px",
+    fontWeight: 600,
     color: T.colLabel,
-    letterSpacing: "0.1em", textTransform: "uppercase", mb: "6px",
+    letterSpacing: "0.12em",
+    textTransform: "uppercase",
+    mb: "4px",
     transition: "color 0.4s ease",
   }}>
     {children}
@@ -135,6 +139,7 @@ export const Footer: FC = () => {
   const isDark = mode === "dark";
   const T = getTokens(isDark);
   const [email, setEmail] = useState("");
+  const hasEmail = email.trim().length > 0;
   const currentYear = new Date().getFullYear();
 
   const logo = isDark ? logoDark : logoLight;
@@ -147,27 +152,34 @@ export const Footer: FC = () => {
   };
 
   return (
-    <Box sx={{
-      backgroundColor: T.bg,
-      borderTop: `0.5px solid ${T.border}`,
-      px: { xs: "24px", sm: "48px", lg: "80px" },
-      transition: "background-color 0.4s ease, border-color 0.4s ease",
-    }}>
-
-      {/* ══ ROW 1 — Logo / Nav columns / Newsletter ═════════════════════ */}
-      <Box sx={{
-        display: "grid",
-        gridTemplateColumns: { xs: "1fr", sm: "1fr 1fr", lg: "240px 1fr 280px" },
-        gap: { xs: "48px", sm: "40px", lg: "64px" },
-        py: { xs: "56px", sm: "72px", md: "88px" },
-        borderBottom: `0.5px solid ${T.border}`,
-        alignItems: "start",
-        transition: "border-color 0.4s ease",
-      }}>
-
-        {/* — Logo + tagline + socials ——————————— */}
+    <Box
+      component="footer"
+      sx={{
+        backgroundColor: T.bg,
+        borderTop: `0.5px solid ${T.border}`,
+        px: { xs: "24px", sm: "48px", lg: "80px" },
+        transition: "background-color 0.4s ease, border-color 0.4s ease",
+      }}
+    >
+      {/* ══ ROW 1 — Logo / Nav columns / Newsletter ══════════════════════ */}
+      <Box
+        sx={{
+          display: "grid",
+          gridTemplateColumns: { xs: "1fr", sm: "1fr 1fr", lg: "220px 1fr 280px" },
+          gap: { xs: "48px", sm: "40px", lg: "64px" },
+          py: { xs: "56px", sm: "72px", md: "88px" },
+          borderBottom: `0.5px solid ${T.border}`,
+          alignItems: "start",
+          transition: "border-color 0.4s ease",
+        }}
+      >
+        {/* — Logo + tagline + socials ── */}
         <Box sx={{ display: "flex", flexDirection: "column", gap: "20px" }}>
-          <Box component={RouterLink} to="/" sx={{ display: "inline-flex", textDecoration: "none" }}>
+          <Box
+            component={RouterLink}
+            to="/"
+            sx={{ display: "inline-flex", textDecoration: "none" }}
+          >
             <Box
               component="img"
               src={logo}
@@ -176,11 +188,15 @@ export const Footer: FC = () => {
             />
           </Box>
 
-          <Typography sx={{
-            fontSize: "13px", color: T.tagline,
-            lineHeight: 1.8, maxWidth: "220px",
-            transition: "color 0.4s ease",
-          }}>
+          <Typography
+            sx={{
+              fontSize: "13px",
+              color: T.tagline,
+              lineHeight: 1.8,
+              maxWidth: "200px",
+              transition: "color 0.4s ease",
+            }}
+          >
             Production-grade AI systems built for companies defining what's next.
           </Typography>
 
@@ -189,19 +205,23 @@ export const Footer: FC = () => {
             {SOCIAL_ITEMS.map(({ key, href }) => (
               <Box
                 key={key}
-                component={RouterLink}
-                to={href}
+                component="a"
+                href={href}
                 target="_blank"
                 rel="noopener noreferrer"
                 sx={{
-                  width: "32px", height: "32px",
+                  width: "32px",
+                  height: "32px",
                   border: `0.5px solid ${T.socialBorder}`,
                   borderRadius: "7px",
-                  display: "flex", alignItems: "center", justifyContent: "center",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
                   transition: "border-color 0.2s ease, background-color 0.2s ease",
                   "&:hover": {
                     borderColor: T.socialHoverBorder,
                     backgroundColor: T.socialHoverBg,
+                    "& img": { opacity: 0.9 },
                   },
                 }}
               >
@@ -210,12 +230,12 @@ export const Footer: FC = () => {
                   src={socialSrc[key]}
                   alt={key}
                   sx={{
-                    width: "13px", height: "13px",
+                    width: "13px",
+                    height: "13px",
                     objectFit: "contain",
                     opacity: T.socialOpacity,
                     filter: T.socialIconFilter,
-                    transition: "opacity 0.2s ease",
-                    "&:hover": { opacity: 0.9 },
+                    transition: "opacity 0.2s ease, filter 0.4s ease",
                   }}
                 />
               </Box>
@@ -223,129 +243,194 @@ export const Footer: FC = () => {
           </Box>
         </Box>
 
-        {/* — Nav columns ————————————————————— */}
-        <Box sx={{
-          display: "grid",
-          gridTemplateColumns: "repeat(3, 1fr)",
-          gap: { xs: "32px", sm: "24px", md: "40px" },
-          gridColumn: { xs: "1", sm: "1 / -1", lg: "auto" },
-        }}>
+        {/* — Nav columns ── */}
+        <Box
+          sx={{
+            display: "grid",
+            gridTemplateColumns: "repeat(3, 1fr)",
+            gap: { xs: "32px", sm: "24px", md: "40px" },
+            gridColumn: { xs: "1", sm: "1 / -1", lg: "auto" },
+          }}
+        >
           {NAV_GROUPS.map((group) => (
-            <Box key={group.label} sx={{ display: "flex", flexDirection: "column", gap: "14px" }}>
-              <ColLabel tokens={T}>{group.label}</ColLabel>
+            <Box
+              key={group.label}
+              sx={{ display: "flex", flexDirection: "column", gap: "14px" }}
+            >
+              <ColLabel T={T}>{group.label}</ColLabel>
               {group.links.map((link) => (
-                <FooterLink key={link.label} label={link.label} to={link.to} tokens={T} />
+                <FooterLink key={link.label} label={link.label} to={link.to} T={T} />
               ))}
             </Box>
           ))}
         </Box>
 
-        {/* — Newsletter ————————————————————— */}
-        <Box sx={{
-          display: "flex", flexDirection: "column", gap: "16px",
-          gridColumn: { xs: "1", sm: "1 / -1", lg: "auto" },
-        }}>
+        {/* — Newsletter ── */}
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            gap: "16px",
+            gridColumn: { xs: "1", sm: "1 / -1", lg: "auto" },
+          }}
+        >
           <Box>
-            <ColLabel tokens={T}>Newsletter</ColLabel>
-            <Typography sx={{
-              fontSize: "13px", color: T.newsletterDesc,
-              lineHeight: 1.7, mt: "6px",
-              transition: "color 0.4s ease",
-            }}>
+            <ColLabel T={T}>Newsletter</ColLabel>
+            <Typography
+              sx={{
+                fontSize: "13px",
+                color: T.newsletterDesc,
+                lineHeight: 1.7,
+                mt: "8px",
+                transition: "color 0.4s ease",
+              }}
+            >
               Get the latest updates on AI development, tools, and releases.
             </Typography>
           </Box>
 
           {/* Input row */}
-          <Box sx={{
-            border: `0.5px solid ${T.inputBorder}`,
-            borderRadius: "10px",
-            backgroundColor: T.inputBg,
-            display: "flex", alignItems: "center", overflow: "hidden",
-            transition: "border-color 0.2s ease, background-color 0.4s ease",
-            "&:focus-within": { borderColor: T.inputFocusBorder },
-            boxShadow: T.inputShadow,
-          }}>
+          <Box
+            sx={{
+              border: `0.5px solid ${T.inputBorder}`,
+              borderRadius: "10px",
+              backgroundColor: T.inputBg,
+              display: "flex",
+              alignItems: "center",
+              overflow: "hidden",
+              transition:
+                "border-color 0.25s ease, background-color 0.4s ease, box-shadow 0.25s ease",
+              "&:focus-within": {
+                borderColor: T.inputFocusBorder,
+                boxShadow: isDark
+                  ? "0 0 0 3px rgba(187,192,198,0.08)"
+                  : "0 0 0 3px rgba(0,25,50,0.07)",
+              },
+              boxShadow: T.inputShadow,
+            }}
+          >
             <TextField
               placeholder="your@email.com"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               variant="standard"
+              type="email"
+              inputProps={{ "aria-label": "Email for newsletter" }}
               sx={{
-                flex: 1, px: "14px",
+                flex: 1,
+                px: "14px",
                 "& .MuiInput-root": {
                   fontSize: "13px",
                   color: T.inputColor,
                   "&::before, &::after": { display: "none" },
                 },
-                "& input": { py: "12px" },
-                "& input::placeholder": { color: T.placeholder, opacity: 1 },
+                "& input": { py: "12px", color: T.inputColor },
+                "& input::placeholder": {
+                  color: T.placeholder,
+                  opacity: 1,
+                },
               }}
             />
+
             <Box
+              role="button"
+              tabIndex={0}
+              aria-label="Subscribe"
               onClick={() => { /* handle submit */ }}
+              onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { /* handle submit */ } }}
               sx={{
-                width: "42px", height: "42px",
-                display: "flex", alignItems: "center", justifyContent: "center",
-                backgroundColor: email.trim() ? T.sendActiveBg : "transparent",
+                width: "44px",
+                height: "44px",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                backgroundColor: hasEmail ? T.sendActiveBg : "transparent",
                 borderLeft: `0.5px solid ${T.inputDivider}`,
-                cursor: "pointer", flexShrink: 0,
+                cursor: "pointer",
+                flexShrink: 0,
                 transition: "background-color 0.2s ease",
                 "&:hover": {
-                  backgroundColor: email.trim() ? T.sendActiveHover : T.sendIdleHoverBg,
+                  backgroundColor: hasEmail ? T.sendActiveHover : T.sendIdleHoverBg,
                 },
               }}
             >
-              <RightArrow sx={{
-                fontSize: "15px",
-                color: email.trim() ? T.sendActiveIcon : T.sendIdleIcon,
-                transition: "color 0.2s ease",
-              }} />
+              <RightArrow
+                sx={{
+                  fontSize: "15px",
+                  color: hasEmail ? T.sendActiveIcon : T.sendIdleIcon,
+                  transition: "color 0.2s ease",
+                }}
+              />
             </Box>
           </Box>
 
-          <Typography sx={{
-            fontSize: "11px", color: T.newsletterDisclaim,
-            lineHeight: 1.6, transition: "color 0.4s ease",
-          }}>
+          <Typography
+            sx={{
+              fontSize: "11px",
+              color: T.newsletterDisclaim,
+              lineHeight: 1.6,
+              transition: "color 0.4s ease",
+            }}
+          >
             No spam. Unsubscribe any time.
           </Typography>
         </Box>
       </Box>
 
       {/* ══ ROW 2 — Ghost wordmark ══════════════════════════════════════ */}
-      <Box sx={{
-        py: { xs: "36px", md: "48px" },
-        borderBottom: `0.5px solid ${T.border}`,
-        overflow: "hidden", display: "flex", alignItems: "center",
-        transition: "border-color 0.4s ease",
-      }}>
-        <Typography sx={{
-          fontSize: { xs: "17vw", sm: "15vw", md: "13vw", lg: "11vw" },
-          fontWeight: 500, lineHeight: 1, letterSpacing: "-0.04em",
-          fontFamily: "'Georgia', serif",
-          color: T.wordmarkColor,
-          WebkitTextStroke: { xs: `1px ${T.wordmarkStroke}`, md: `1.5px ${T.wordmarkStroke}` },
-          userSelect: "none", whiteSpace: "nowrap",
-          transition: "color 0.4s ease",
-        }}>
+      <Box
+        sx={{
+          py: { xs: "36px", md: "48px" },
+          borderBottom: `0.5px solid ${T.border}`,
+          overflow: "hidden",
+          display: "flex",
+          alignItems: "center",
+          transition: "border-color 0.4s ease",
+        }}
+      >
+        <Typography
+          aria-hidden="true"
+          sx={{
+            fontSize: { xs: "17vw", sm: "15vw", md: "13vw", lg: "11vw" },
+            fontWeight: 600,
+            lineHeight: 1,
+            letterSpacing: "-0.04em",
+            fontFamily: "'Georgia', 'Times New Roman', serif",
+            // Dark: filled with near-black so it reads as a ghost stamp
+            // Light: transparent fill, only the stroke shows
+            color: T.wordmarkColor,
+            WebkitTextStroke: {
+              xs:  `1px ${T.wordmarkStroke}`,
+              md: `1.5px ${T.wordmarkStroke}`,
+            },
+            userSelect: "none",
+            whiteSpace: "nowrap",
+            transition: "color 0.4s ease",
+          }}
+        >
           FOSSILITE
         </Typography>
       </Box>
 
       {/* ══ ROW 3 — Bottom bar ══════════════════════════════════════════ */}
-      <Box sx={{
-        py: "20px",
-        display: "flex",
-        flexDirection: { xs: "column", sm: "row" },
-        justifyContent: "space-between",
-        alignItems: { xs: "flex-start", sm: "center" },
-        gap: "12px",
-      }}>
-        <Typography sx={{
-          fontSize: "12px", color: T.copyright,
-          letterSpacing: "0.02em", transition: "color 0.4s ease",
-        }}>
+      <Box
+        sx={{
+          py: "20px",
+          display: "flex",
+          flexDirection: { xs: "column", sm: "row" },
+          justifyContent: "space-between",
+          alignItems: { xs: "flex-start", sm: "center" },
+          gap: "12px",
+        }}
+      >
+        <Typography
+          sx={{
+            fontSize: "12px",
+            color: T.copyright,
+            letterSpacing: "0.02em",
+            transition: "color 0.4s ease",
+          }}
+        >
           © {currentYear} Fossilite. All rights reserved.
         </Typography>
 
@@ -358,7 +443,8 @@ export const Footer: FC = () => {
               sx={{
                 fontSize: "12px",
                 color: T.legalLink,
-                textDecoration: "none", letterSpacing: "0.02em",
+                textDecoration: "none",
+                letterSpacing: "0.02em",
                 transition: "color 0.2s ease",
                 "&:hover": { color: T.legalLinkHover },
               }}
@@ -368,7 +454,6 @@ export const Footer: FC = () => {
           ))}
         </Box>
       </Box>
-
     </Box>
   );
 };

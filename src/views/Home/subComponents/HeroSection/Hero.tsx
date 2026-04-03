@@ -15,29 +15,31 @@ const TECH_ITEMS = [
 export const Hero: FC = () => {
   const { mode } = useThemeMode();
 
-  const isLight           = mode === "light";
-  const bgColor           = isLight ? "#f5f7fb" : "#000435";
-  const primaryText       = isLight ? "#0d0d0d"  : "#ffffff";
-  const secondaryText     = isLight ? "#4a4545"  : "#555555";
-  const badgeBg           = isLight ? "#eef3fc"  : "#0f0f0f";
-  const badgeBorder       = isLight ? "#ccd8f0"  : "#2e2e2e";
-  const badgeDot          = isLight ? "#0a84ff"  : "#ffffff";
-  const badgeLabel        = isLight ? "#5a6a8a"  : "#666666";
-  const ctaPrimaryBg      = isLight ? "#0a1a3a"  : "#ffffff";
-  const ctaPrimaryText    = isLight ? "#ffffff"  : "#000000";
-  const ctaPrimaryHover   = isLight ? "#0d2255"  : "#e0e0e0";
-  const ctaSecBorder      = isLight ? badgeBorder : "#2e2e2e";
-  const ctaSecText        = isLight ? "#4a5a7a"  : "#777777";
-  const ctaSecHoverText   = isLight ? "#0d0d0d"  : "#ffffff";
-  const ctaSecHoverBorder = isLight ? "#8fa0cc"  : "#555555";
-  const statsDivider      = isLight ? "#d0dff7"  : "#1a1a1a";
-  const statsNumColor     = isLight ? "#0d0d0d"  : "#ffffff";
-  const statsLabelColor   = isLight ? "#8a9ab8"  : "#444444";
-  const tickerBg          = isLight ? "#f5f7fb"  : "#040404";
-  const tickerBorder      = isLight ? "#d0dff7"  : "#161616";
-  const tickerPillBg      = isLight ? "#eef3fc"  : "#080808";
-  const tickerPillBorder  = isLight ? "#cdd8f0"  : "#1e1e1e";
-  const tickerText        = isLight ? "#8a9ab8"  : "#444444";
+  const isLight = mode === "light";
+
+  // ── Theme: Cream / Midnight / Grey Cloud / Black ──────────────────────────
+  const bgColor           = isLight ? "#FFF4E3"  : "#161616";
+  const primaryText       = isLight ? "#001932"  : "#FFF4E3";
+  const secondaryText     = isLight ? "#4a4a4a"  : "#BBC0C6";
+  const badgeBg           = isLight ? "#f5ede0"  : "#1e1e1e";
+  const badgeBorder       = isLight ? "#d9c9b0"  : "#2e2e2e";
+  const badgeDot          = isLight ? "#001932"  : "#BBC0C6";
+  const badgeLabel        = isLight ? "#4a5a6a"  : "#BBC0C6";
+  const ctaPrimaryBg      = isLight ? "#001932"  : "#FFF4E3";
+  const ctaPrimaryText    = isLight ? "#FFF4E3"  : "#001932";
+  const ctaPrimaryHover   = isLight ? "#002a4a"  : "#e8ddd0";
+  const ctaSecBorder      = isLight ? "#c0b8ac"  : "#2e2e2e";
+  const ctaSecText        = isLight ? "#4a5a6a"  : "#BBC0C6";
+  const ctaSecHoverText   = isLight ? "#001932"  : "#FFF4E3";
+  const ctaSecHoverBorder = isLight ? "#001932"  : "#BBC0C6";
+  const statsDivider      = isLight ? "#d9c9b0"  : "#2a2a2a";
+  const statsNumColor     = isLight ? "#001932"  : "#FFF4E3";
+  const statsLabelColor   = isLight ? "#7a7a7a"  : "#BBC0C6";
+  const tickerBg          = isLight ? "#f5ede0"  : "#111111";
+  const tickerBorder      = isLight ? "#d9c9b0"  : "#222222";
+  const tickerPillBg      = isLight ? "#FFF4E3"  : "#1a1a1a";
+  const tickerPillBorder  = isLight ? "#d9c9b0"  : "#2a2a2a";
+  const tickerText        = isLight ? "#6a6a6a"  : "#BBC0C6";
 
   return (
     <Box
@@ -116,8 +118,8 @@ export const Hero: FC = () => {
               fontWeight: 500, lineHeight: 0.95, letterSpacing: "-0.03em",
               fontFamily: "'Georgia', serif",
               ...(isLight
-                ? { color: "#b0b8cc" }
-                : { color: "transparent", WebkitTextStroke: "1px rgba(255,255,255,0.4)" }
+                ? { color: "#BBC0C6" }
+                : { color: "transparent", WebkitTextStroke: "1px rgba(255,244,227,0.35)" }
               ),
               transition: "color 0.4s ease",
             }}>

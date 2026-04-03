@@ -3,48 +3,44 @@ import { Box, Stack, Typography } from "@mui/material";
 import * as THREE from "three";
 import { Snowflake, Sparkles } from "lucide-react";
 import { useThemeMode } from "../../../../theme/theme";
-import lightMode from '../../../../assets/Images/CodeImages/CodeImage1Light.png'
-import darkMode from '../../../../assets/Images/CodeImages/CodeImage1Dark.png'
+import lightModeImg from "../../../../assets/Images/CodeImages/CodeImage1Light.png";
+import darkModeImg  from "../../../../assets/Images/CodeImages/CodeImage1Dark.png";
+import { PerformanceNodes } from "../../../../components/model3DAnimation";
 
-import { PerformanceNodes } from '../../../../components/model3DAnimation'
-
-import Code2ImageDark from '../../../../assets/Images/CodeImages/Code2ImageDark.gif'
-import CodeImage3LightChat from '../../../../assets/Images/CodeImages/CodeImage3LightChat.gif'
-
+// ── Theme tokens ─────────────────────────────────────────────────────────────
 const getTokens = (isDark: boolean) => ({
-  bg:            isDark ? "#000c2e" : "#f0f4ff",
-  cardBg:        isDark ? "#000c2e" : "#ffffff",
-  cardBgAlt:     isDark ? "#020e38" : "#f8faff",
-  border:        isDark ? "#1a2a5e" : "#c2d0f0",
-  stroke:        isDark ? "rgba(255,255,255,0.10)" : "rgba(0,12,46,0.12)",
-  primaryText:   isDark ? "#ffffff" : "#000c2e",
-  secondaryText: isDark ? "#6b7fa8" : "#3a4e78",
-  fadedText:     isDark ? "#2e4a8a" : "#a0aec0",
-  accent:        isDark ? "#4a9eff" : "#0055cc",
-  accentGlow:    isDark ? "rgba(74,158,255,0.12)" : "rgba(0,85,204,0.08)",
-  tagBg:         isDark ? "#020e38" : "#eef3fc",
-  pillBorder:    isDark ? "#1a2a5e" : "#c2d0f0",
-  particlePrimary:   isDark ? 0x4a9eff : 0x0055cc,
-  particleSecondary: isDark ? 0x1a3a7a : 0x3a5a9e,
-  glowTop:       isDark
-    ? "linear-gradient(90deg, transparent, rgba(74,158,255,0.18), transparent)"
-    : "linear-gradient(90deg, transparent, rgba(0,85,204,0.30), transparent)",
-  boxShadow:     isDark
+  bg:           isDark ? "#161616" : "#FFF4E3",
+  cardBg:       isDark ? "#1a1a1a" : "#ffffff",
+  cardBgAlt:    isDark ? "#1e1e1e" : "#fdf6ec",
+  border:       isDark ? "#2a2a2a" : "#d9c9b0",
+  stroke:       isDark ? "rgba(187,192,198,0.10)" : "rgba(0,25,50,0.10)",
+  primaryText:  isDark ? "#FFF4E3" : "#001932",
+  secondaryText:isDark ? "#BBC0C6" : "#4a4a6a",
+  fadedText:    isDark ? "#3a3a3a" : "#BBC0C6",
+  accent:       isDark ? "#BBC0C6" : "#001932",
+  accentGlow:   isDark ? "rgba(187,192,198,0.08)" : "rgba(0,25,50,0.06)",
+  tagBg:        isDark ? "#1e1e1e" : "#f5ede0",
+  pillBorder:   isDark ? "#2a2a2a" : "#d9c9b0",
+  glowTop:      isDark
+    ? "linear-gradient(90deg, transparent, rgba(187,192,198,0.12), transparent)"
+    : "linear-gradient(90deg, transparent, rgba(0,25,50,0.10), transparent)",
+  boxShadow:    isDark
     ? "none"
-    : "0 8px 40px rgba(0,40,160,0.08), 0 2px 8px rgba(0,0,0,0.04)",
+    : "0 8px 40px rgba(0,25,50,0.06), 0 2px 8px rgba(0,0,0,0.04)",
+  gridBorder:   isDark ? "#FFF4E3" : "#001932",
+  // Three.js
+  particlePrimary:   isDark ? 0xBBC0C6 : 0x001932,
+  particleSecondary: isDark ? 0x3a3a3a : 0x3a5a7a,
 });
 
 const TopGlow: FC<{ tokens: ReturnType<typeof getTokens> }> = ({ tokens }) => (
-  <Box
-    sx={{
-      position: "absolute", top: 0, left: "50%",
-      transform: "translateX(-50%)",
-      width: "60%", height: "1px",
-      background: tokens.glowTop,
-      pointerEvents: "none",
-      zIndex: 2,
-    }}
-  />
+  <Box sx={{
+    position: "absolute", top: 0, left: "50%",
+    transform: "translateX(-50%)",
+    width: "60%", height: "1px",
+    background: tokens.glowTop,
+    pointerEvents: "none", zIndex: 2,
+  }} />
 );
 
 const CornerAccents: FC<{ color: string }> = ({ color }) => (
@@ -54,10 +50,7 @@ const CornerAccents: FC<{ color: string }> = ({ color }) => (
   </>
 );
 
-interface ColdAnimationProps {
-  type: "frost-nodes" | "crystal-cage";
-  isDark: boolean;
-}
+interface ColdAnimationProps { type: "frost-nodes" | "crystal-cage"; isDark: boolean; }
 
 const ColdAnimation: FC<ColdAnimationProps> = ({ type, isDark }) => {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -82,26 +75,24 @@ const ColdAnimation: FC<ColdAnimationProps> = ({ type, isDark }) => {
 
     let animationFrameId: number;
 
-    const primaryColor   = isDark ? 0x4a9eff : 0x0055cc;
-    const secondaryColor = isDark ? 0x1a3a7a : 0x3a5a9e;
+    // Midnight / GreyCloud palette
+    const primaryColor   = isDark ? 0xBBC0C6 : 0x001932;
+    const secondaryColor = isDark ? 0x3a3a3a : 0x3a5a7a;
 
     if (type === "frost-nodes") {
       const particleCount = 180;
       const positions  = new Float32Array(particleCount * 3);
       const colors     = new Float32Array(particleCount * 3);
       const velocities = new Float32Array(particleCount * 3);
-
-      const baseColor = new THREE.Color(isDark ? 0x4a9eff : 0x0055cc);
+      const baseColor  = new THREE.Color(primaryColor);
 
       for (let i = 0; i < particleCount; i++) {
         positions[i * 3]     = (Math.random() - 0.5) * 8;
         positions[i * 3 + 1] = (Math.random() - 0.5) * 8;
         positions[i * 3 + 2] = (Math.random() - 0.5) * 8;
-
         colors[i * 3]     = baseColor.r;
         colors[i * 3 + 1] = baseColor.g;
         colors[i * 3 + 2] = baseColor.b;
-
         velocities[i * 3]     = (Math.random() - 0.5) * 0.005;
         velocities[i * 3 + 1] = (Math.random() - 0.5) * 0.005;
         velocities[i * 3 + 2] = (Math.random() - 0.5) * 0.005;
@@ -112,23 +103,18 @@ const ColdAnimation: FC<ColdAnimationProps> = ({ type, isDark }) => {
       geometry.setAttribute("color",    new THREE.BufferAttribute(colors,    3));
 
       const material = new THREE.PointsMaterial({
-        size: 0.06,
-        vertexColors: true,
-        transparent: true,
-        opacity: isDark ? 0.8 : 0.65,
+        size: 0.06, vertexColors: true, transparent: true,
+        opacity: isDark ? 0.8 : 0.55,
         blending: isDark ? THREE.AdditiveBlending : THREE.NormalBlending,
       });
-
       const points = new THREE.Points(geometry, material);
       group.add(points);
 
       const lineMaterial = new THREE.LineBasicMaterial({
-        color: primaryColor,
-        transparent: true,
-        opacity: isDark ? 0.18 : 0.22,
+        color: primaryColor, transparent: true,
+        opacity: isDark ? 0.18 : 0.14,
         blending: isDark ? THREE.AdditiveBlending : THREE.NormalBlending,
       });
-
       const lineGeometry = new THREE.BufferGeometry();
       lineGeometry.setAttribute("position", new THREE.BufferAttribute(positions, 3));
       const lines = new THREE.LineSegments(lineGeometry, lineMaterial);
@@ -156,15 +142,14 @@ const ColdAnimation: FC<ColdAnimationProps> = ({ type, isDark }) => {
       const outerGeo  = new THREE.IcosahedronGeometry(2, 0);
       const outerMat  = new THREE.MeshBasicMaterial({
         color: secondaryColor, wireframe: true, transparent: true,
-        opacity: isDark ? 0.4 : 0.35,
+        opacity: isDark ? 0.4 : 0.25,
       });
-      const outerMesh = new THREE.Mesh(outerGeo, outerMat);
-      group.add(outerMesh);
+      group.add(new THREE.Mesh(outerGeo, outerMat));
 
       const innerGeo  = new THREE.OctahedronGeometry(1, 0);
       const innerMat  = new THREE.MeshBasicMaterial({
         color: primaryColor, wireframe: true, transparent: true,
-        opacity: isDark ? 0.6 : 0.55,
+        opacity: isDark ? 0.6 : 0.45,
       });
       const innerMesh = new THREE.Mesh(innerGeo, innerMat);
       group.add(innerMesh);
@@ -172,7 +157,7 @@ const ColdAnimation: FC<ColdAnimationProps> = ({ type, isDark }) => {
       const ringGeo = new THREE.RingGeometry(2.5, 2.6, 32);
       const ringMat = new THREE.MeshBasicMaterial({
         color: primaryColor, side: THREE.DoubleSide, transparent: true,
-        opacity: isDark ? 0.2 : 0.18,
+        opacity: isDark ? 0.2 : 0.15,
       });
       const ring = new THREE.Mesh(ringGeo, ringMat);
       ring.rotation.x = Math.PI / 2;
@@ -189,8 +174,7 @@ const ColdAnimation: FC<ColdAnimationProps> = ({ type, isDark }) => {
     }
 
     const handleResize = () => {
-      const w = container.clientWidth;
-      const h = container.clientHeight;
+      const w = container.clientWidth, h = container.clientHeight;
       renderer.setSize(w, h);
       camera.aspect = w / h;
       camera.updateProjectionMatrix();
@@ -206,10 +190,7 @@ const ColdAnimation: FC<ColdAnimationProps> = ({ type, isDark }) => {
   }, [type, isDark]);
 
   return (
-    <Box
-      ref={containerRef}
-      sx={{ width: "100%", height: "100%", position: "absolute", top: 0, left: 0 }}
-    />
+    <Box ref={containerRef} sx={{ width: "100%", height: "100%", position: "absolute", top: 0, left: 0 }} />
   );
 };
 
@@ -219,82 +200,61 @@ export const FirstImageSection: FC = () => {
   const T = getTokens(isDark);
 
   return (
-    <Box
-      sx={{
-        backgroundColor: T.bg,
-        px: { xs: "24px", sm: "48px", lg: "80px" },
-        py: { xs: "80px", sm: "100px", md: "130px" },
-        transition: "background-color 0.4s ease",
-      }}
-    >
+    <Box sx={{
+      backgroundColor: T.bg,
+      px: { xs: "24px", sm: "48px", lg: "80px" },
+      py: { xs: "80px", sm: "100px", md: "130px" },
+      transition: "background-color 0.4s ease",
+    }}>
 
-      {/* ══════════════════════════════════════
-          BLOCK 1 — Bento grid
-      ══════════════════════════════════════ */}
-      <Box
-        sx={{
-          display: "grid",
-          gridTemplateColumns: { xs: "1fr", md: "1fr 1fr", lg: "5fr 4fr" },
-          gap: "1px",
-          backgroundColor: T.border,
-          border: `2px solid ${isDark ? "#ffffff" : "#000c2e"}`,
-          borderRadius: "20px",
-          overflow: "hidden",
-          boxShadow: T.boxShadow,
-          transition: "border-color 0.4s ease, background-color 0.4s ease",
-        }}
-      >
-        {/* ── Cell: Heading + text ── */}
-        <Box
-          sx={{
-            backgroundColor: T.bg,
-            p: { xs: "32px", sm: "40px", md: "48px" },
-            display: "flex",
-            flexDirection: "column",
-            justifyContent: "space-between",
-            gap: "32px",
-            position: "relative",
-            transition: "background-color 0.4s ease",
-          }}
-        >
+      {/* ══ BLOCK 1 — Bento grid ══ */}
+      <Box sx={{
+        display: "grid",
+        gridTemplateColumns: { xs: "1fr", md: "1fr 1fr", lg: "5fr 4fr" },
+        gap: "1px",
+        backgroundColor: T.border,
+        border: `2px solid ${T.gridBorder}`,
+        borderRadius: "20px",
+        overflow: "hidden",
+        boxShadow: T.boxShadow,
+        transition: "border-color 0.4s ease, background-color 0.4s ease",
+      }}>
+
+        {/* Cell: Heading + text */}
+        <Box sx={{
+          backgroundColor: T.bg,
+          p: { xs: "32px", sm: "40px", md: "48px" },
+          display: "flex", flexDirection: "column",
+          justifyContent: "space-between", gap: "32px",
+          position: "relative",
+          transition: "background-color 0.4s ease",
+        }}>
           <TopGlow tokens={T} />
 
           <Box sx={{ display: "flex", alignItems: "center", gap: "10px" }}>
-            <Typography sx={{ fontSize: "11px", color: T.secondaryText, fontFamily: "monospace", letterSpacing: "0.06em", transition: "color 0.4s ease" }}>
-              01
-            </Typography>
+            <Typography sx={{ fontSize: "11px", color: T.secondaryText, fontFamily: "monospace", letterSpacing: "0.06em" }}>01</Typography>
             <Box sx={{ width: "40px", height: "0.5px", backgroundColor: T.stroke }} />
-            <Typography sx={{ fontSize: "11px", color: T.secondaryText, textTransform: "uppercase", letterSpacing: "0.08em", fontWeight: 500, transition: "color 0.4s ease" }}>
+            <Typography sx={{ fontSize: "11px", color: T.secondaryText, textTransform: "uppercase", letterSpacing: "0.08em", fontWeight: 500 }}>
               How it works
             </Typography>
           </Box>
 
           <Box>
-            <Typography
-              sx={{
-                fontSize: { xs: "30px", sm: "38px", md: "46px", lg: "52px" },
-                fontWeight: 500,
-                color: T.primaryText,
-                lineHeight: 1.1,
-                letterSpacing: "-0.025em",
-                fontFamily: "'Georgia', serif",
-                mb: "12px",
-                transition: "color 0.4s ease",
-              }}
-            >
+            <Typography sx={{
+              fontSize: { xs: "30px", sm: "38px", md: "46px", lg: "52px" },
+              fontWeight: 500, color: T.primaryText,
+              lineHeight: 1.1, letterSpacing: "-0.025em",
+              fontFamily: "'Georgia', serif", mb: "12px",
+              transition: "color 0.4s ease",
+            }}>
               Built for scale,
             </Typography>
-            <Typography
-              sx={{
-                fontSize: { xs: "30px", sm: "38px", md: "46px", lg: "52px" },
-                fontWeight: 500,
-                lineHeight: 1.1,
-                letterSpacing: "-0.025em",
-                fontFamily: "'Georgia', serif",
-                color: T.fadedText,
-                transition: "color 0.4s ease",
-              }}
-            >
+            <Typography sx={{
+              fontSize: { xs: "30px", sm: "38px", md: "46px", lg: "52px" },
+              fontWeight: 500, lineHeight: 1.1,
+              letterSpacing: "-0.025em", fontFamily: "'Georgia', serif",
+              color: T.fadedText, transition: "color 0.4s ease",
+            }}>
               not just for demos.
             </Typography>
           </Box>
@@ -305,16 +265,13 @@ export const FirstImageSection: FC = () => {
 
           <Box sx={{ display: "flex", flexWrap: "wrap", gap: "8px" }}>
             {["Production-grade", "Scalable", "AI-native"].map((tag) => (
-              <Box
-                key={tag}
-                sx={{
-                  px: "12px", py: "5px",
-                  border: `0.5px solid ${T.pillBorder}`,
-                  borderRadius: "99px",
-                  backgroundColor: T.tagBg,
-                  transition: "background-color 0.4s ease, border-color 0.4s ease",
-                }}
-              >
+              <Box key={tag} sx={{
+                px: "12px", py: "5px",
+                border: `0.5px solid ${T.pillBorder}`,
+                borderRadius: "99px",
+                backgroundColor: T.tagBg,
+                transition: "background-color 0.4s ease, border-color 0.4s ease",
+              }}>
                 <Typography sx={{ fontSize: "12px", color: T.secondaryText, transition: "color 0.4s ease" }}>
                   {tag}
                 </Typography>
@@ -323,93 +280,70 @@ export const FirstImageSection: FC = () => {
           </Box>
         </Box>
 
-        {/* ── Cell: 3D frost-nodes animation ── */}
-        <Box
-          sx={{
-            backgroundColor: T.cardBg,
-            position: "relative",
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-            justifyContent: "center",
-            p: { xs: "28px", sm: "32px" },
-            minHeight: { xs: "300px", md: "420px" },
-            overflow: "hidden",
-            transition: "background-color 0.4s ease",
-          }}
-        >
+        {/* Cell: frost-nodes animation + image */}
+        <Box sx={{
+          backgroundColor: T.cardBg,
+          position: "relative",
+          display: "flex", flexDirection: "column",
+          alignItems: "center", justifyContent: "center",
+          p: { xs: "28px", sm: "32px" },
+          minHeight: { xs: "300px", md: "420px" },
+          overflow: "hidden",
+          transition: "background-color 0.4s ease",
+        }}>
           <TopGlow tokens={T} />
-
-          {/* Radial glow */}
+          <Box sx={{
+            position: "absolute", top: "40%", left: "50%",
+            transform: "translate(-50%, -50%)",
+            width: "280px", height: "280px",
+            background: `radial-gradient(ellipse, ${T.accentGlow} 0%, transparent 65%)`,
+            pointerEvents: "none",
+          }} />
+          <ColdAnimation type="frost-nodes" isDark={isDark} />
           <Box
+            component="img"
+            src={isDark ? darkModeImg : lightModeImg}
+            alt="Code preview"
             sx={{
-              position: "absolute", top: "40%", left: "50%",
+              position: "absolute", top: "50%", left: "50%",
               transform: "translate(-50%, -50%)",
-              width: "280px", height: "280px",
-              background: `radial-gradient(ellipse, ${T.accentGlow} 0%, transparent 65%)`,
-              pointerEvents: "none",
+              width: { xs: "80%", sm: "85%", md: "90%" },
+              height: "auto", borderRadius: "10px",
+              zIndex: 10, pointerEvents: "none",
+              opacity: 0.92, transition: "opacity 0.4s ease",
             }}
           />
-
-          <ColdAnimation type="frost-nodes" isDark={isDark} />
-
-            {/* ── Mode-aware image ── */}
-<Box
-  component="img"
-  src={isDark ? darkMode : lightMode}
-  alt="Code preview"
-  sx={{
-    position: "absolute",
-    top: "50%",
-    left: "50%",
-    transform: "translate(-50%, -50%)",
-    width: { xs: "80%", sm: "85%", md: "90%" },
-    height: "auto",
-    borderRadius: "10px",
-    zIndex: 10,
-    pointerEvents: "none",
-    opacity: 0.92,
-    transition: "opacity 0.4s ease",
-  }}
-/>
-
           <Box sx={{ zIndex: 12, position: "absolute", bottom: "16px", left: "16px", display: "flex", alignItems: "center", gap: "6px" }}>
             <Snowflake size={13} color={T.accent} />
-            <Typography sx={{ fontSize: "10px", color: T.accent, fontFamily: "monospace", letterSpacing: "0.06em", transition: "color 0.4s ease" }}>
+            <Typography sx={{ fontSize: "10px", color: T.accent, fontFamily: "monospace", letterSpacing: "0.06em" }}>
               LIVE: COLD FROST NODES SYSTEM
             </Typography>
           </Box>
         </Box>
 
-        {/* ── Cell: Stats row ── */}
-        <Box
-          sx={{
-            backgroundColor: T.cardBgAlt,
-            gridColumn: { xs: "1", md: "1 / -1" },
-            p: { xs: "24px 32px", sm: "28px 48px" },
-            display: "flex",
-            flexDirection: { xs: "column", sm: "row" },
-            borderTop: `0.5px solid ${T.border}`,
-            transition: "background-color 0.4s ease, border-color 0.4s ease",
-          }}
-        >
+        {/* Cell: Stats row */}
+        <Box sx={{
+          backgroundColor: T.cardBgAlt,
+          gridColumn: { xs: "1", md: "1 / -1" },
+          p: { xs: "24px 32px", sm: "28px 48px" },
+          display: "flex", flexDirection: { xs: "column", sm: "row" },
+          borderTop: `0.5px solid ${T.border}`,
+          transition: "background-color 0.4s ease, border-color 0.4s ease",
+        }}>
           {[
             { num: "50+",    label: "Products shipped" },
             { num: "40–60%", label: "Faster delivery"  },
             { num: "100%",   label: "Human reviewed"   },
             { num: "0",      label: "Vibe-coded lines"  },
           ].map(({ num, label }, i) => (
-            <Box
-              key={label}
-              sx={{
-                flex: 1,
-                px: { xs: "0", sm: "24px" },
-                py: { xs: "16px", sm: "8px" },
-                borderLeft: { xs: "none", sm: i === 0 ? "none" : `0.5px solid ${T.border}` },
-                borderTop:  { xs: i === 0 ? "none" : `0.5px solid ${T.border}`, sm: "none" },
-                transition: "border-color 0.4s ease",
-              }}
-            >
+            <Box key={label} sx={{
+              flex: 1,
+              px: { xs: "0", sm: "24px" },
+              py: { xs: "16px", sm: "8px" },
+              borderLeft: { xs: "none", sm: i === 0 ? "none" : `0.5px solid ${T.border}` },
+              borderTop:  { xs: i === 0 ? "none" : `0.5px solid ${T.border}`, sm: "none" },
+              transition: "border-color 0.4s ease",
+            }}>
               <Typography sx={{ fontSize: { xs: "20px", sm: "24px" }, fontWeight: 500, color: T.primaryText, lineHeight: 1, mb: "6px", transition: "color 0.4s ease" }}>
                 {num}
               </Typography>
@@ -421,111 +355,74 @@ export const FirstImageSection: FC = () => {
         </Box>
       </Box>
 
-      {/* ══════════════════════════════════════
-          DIVIDER with centre dot
-      ══════════════════════════════════════ */}
-      <Box
-        sx={{
-          my: { xs: "72px", sm: "96px", md: "120px" },
-          display: "flex",
-          alignItems: "center",
-          gap: "20px",
-        }}
-      >
+      {/* ══ DIVIDER ══ */}
+      <Box sx={{ my: { xs: "72px", sm: "96px", md: "120px" }, display: "flex", alignItems: "center", gap: "20px" }}>
         <Box sx={{ flex: 1, height: "0.5px", backgroundColor: T.border, transition: "background-color 0.4s ease" }} />
-        <Box
-          sx={{
-            width: "6px", height: "6px",
-            borderRadius: "50%",
-            border: `0.5px solid ${T.secondaryText}`,
-            backgroundColor: T.cardBg,
-            transition: "border-color 0.4s ease, background-color 0.4s ease",
-          }}
-        />
+        <Box sx={{ width: "6px", height: "6px", borderRadius: "50%", border: `0.5px solid ${T.secondaryText}`, backgroundColor: T.cardBg, transition: "border-color 0.4s ease, background-color 0.4s ease" }} />
         <Box sx={{ flex: 1, height: "0.5px", backgroundColor: T.border, transition: "background-color 0.4s ease" }} />
       </Box>
 
-      {/* ══════════════════════════════════════
-          BLOCK 2 — Split card
-      ══════════════════════════════════════ */}
-      <Box
-        sx={{
-          display: "grid",
-          gridTemplateColumns: { xs: "1fr", md: "1fr 1fr" },
-          gap: "1px",
-          backgroundColor: T.border,
-          border: `2px solid ${isDark ? "#ffffff" : "#000c2e"}`,
-          borderRadius: "20px",
-          overflow: "hidden",
-          boxShadow: T.boxShadow,
-          transition: "border-color 0.4s ease, background-color 0.4s ease",
-        }}
-      >
-        {/* ── Cell: 3D crystal-cage animation ── */}
-        <Box
-          sx={{
-            backgroundColor: T.cardBg,
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            p: { xs: "32px", sm: "40px" },
-            position: "relative",
-            minHeight: { xs: "280px", md: "420px" },
-            overflow: "hidden",
-            order: { xs: 2, md: 1 },
-            transition: "background-color 0.4s ease",
-          }}
-        >
-          <TopGlow tokens={T} />
-          <CornerAccents color={T.secondaryText} /> 
-          
-          <PerformanceNodes />
+      {/* ══ BLOCK 2 — Split card ══ */}
+      <Box sx={{
+        display: "grid",
+        gridTemplateColumns: { xs: "1fr", md: "1fr 1fr" },
+        gap: "1px",
+        backgroundColor: T.border,
+        border: `2px solid ${T.gridBorder}`,
+        borderRadius: "20px",
+        overflow: "hidden",
+        boxShadow: T.boxShadow,
+        transition: "border-color 0.4s ease, background-color 0.4s ease",
+      }}>
 
+        {/* Cell: PerformanceNodes animation */}
+        <Box sx={{
+          backgroundColor: T.cardBg,
+          display: "flex", alignItems: "center", justifyContent: "center",
+          p: { xs: "32px", sm: "40px" },
+          position: "relative",
+          minHeight: { xs: "280px", md: "420px" },
+          overflow: "hidden",
+          order: { xs: 2, md: 1 },
+          transition: "background-color 0.4s ease",
+        }}>
+          <TopGlow tokens={T} />
+          <CornerAccents color={T.secondaryText} />
+          <PerformanceNodes />
           <Box sx={{ zIndex: 12, position: "absolute", bottom: "16px", left: "16px", display: "flex", alignItems: "center", gap: "6px" }}>
             <Sparkles size={13} color={T.accent} />
-            <Typography sx={{ fontSize: "10px", color: T.accent, fontFamily: "monospace", letterSpacing: "0.06em", transition: "color 0.4s ease" }}>
+            <Typography sx={{ fontSize: "10px", color: T.accent, fontFamily: "monospace", letterSpacing: "0.06em" }}>
               LIVE: 3D CYBERNETIC GEOMETRY
             </Typography>
           </Box>
         </Box>
 
-        {/* ── Cell: Text + metrics ── */}
-        <Box
-          sx={{
-            backgroundColor: T.bg,
-            p: { xs: "32px", sm: "40px", md: "48px" },
-            display: "flex",
-            flexDirection: "column",
-            justifyContent: "center",
-            gap: "28px",
-            position: "relative",
-            order: { xs: 1, md: 2 },
-            transition: "background-color 0.4s ease",
-          }}
-        >
+        {/* Cell: Text + metrics */}
+        <Box sx={{
+          backgroundColor: T.bg,
+          p: { xs: "32px", sm: "40px", md: "48px" },
+          display: "flex", flexDirection: "column",
+          justifyContent: "center", gap: "28px",
+          position: "relative",
+          order: { xs: 1, md: 2 },
+          transition: "background-color 0.4s ease",
+        }}>
           <TopGlow tokens={T} />
 
           <Box sx={{ display: "flex", alignItems: "center", gap: "10px" }}>
-            <Typography sx={{ fontSize: "11px", color: T.secondaryText, fontFamily: "monospace", letterSpacing: "0.06em", transition: "color 0.4s ease" }}>
-              02
-            </Typography>
+            <Typography sx={{ fontSize: "11px", color: T.secondaryText, fontFamily: "monospace", letterSpacing: "0.06em" }}>02</Typography>
             <Box sx={{ width: "40px", height: "0.5px", backgroundColor: T.stroke }} />
-            <Typography sx={{ fontSize: "11px", color: T.secondaryText, textTransform: "uppercase", letterSpacing: "0.08em", fontWeight: 500, transition: "color 0.4s ease" }}>
+            <Typography sx={{ fontSize: "11px", color: T.secondaryText, textTransform: "uppercase", letterSpacing: "0.08em", fontWeight: 500 }}>
               Our approach
             </Typography>
           </Box>
 
-          <Typography
-            sx={{
-              fontSize: { xs: "30px", sm: "36px", md: "42px" },
-              fontWeight: 500,
-              color: T.primaryText,
-              lineHeight: 1.1,
-              letterSpacing: "-0.02em",
-              fontFamily: "'Georgia', serif",
-              transition: "color 0.4s ease",
-            }}
-          >
+          <Typography sx={{
+            fontSize: { xs: "30px", sm: "36px", md: "42px" },
+            fontWeight: 500, color: T.primaryText,
+            lineHeight: 1.1, letterSpacing: "-0.02em",
+            fontFamily: "'Georgia', serif", transition: "color 0.4s ease",
+          }}>
             Engineers first.{" "}
             <Box component="span" sx={{ color: T.fadedText, transition: "color 0.4s ease" }}>
               AI-enhanced.
@@ -538,26 +435,18 @@ export const FirstImageSection: FC = () => {
             </Typography>
           </Stack>
 
-          <Box
-            sx={{
-              display: "grid",
-              gridTemplateColumns: "1fr 1fr",
-              gap: "1px",
-              backgroundColor: T.border,
-              border: `0.5px solid ${T.border}`,
-              borderRadius: "12px",
-              overflow: "hidden",
-              transition: "background-color 0.4s ease, border-color 0.4s ease",
-            }}
-          >
+          <Box sx={{
+            display: "grid", gridTemplateColumns: "1fr 1fr",
+            gap: "1px", backgroundColor: T.border,
+            border: `0.5px solid ${T.border}`,
+            borderRadius: "12px", overflow: "hidden",
+            transition: "background-color 0.4s ease, border-color 0.4s ease",
+          }}>
             {[
-              { num: "40–60%", label: "Faster delivery"  },
-              { num: "100%",   label: "Human reviewed"   },
+              { num: "40–60%", label: "Faster delivery" },
+              { num: "100%",   label: "Human reviewed"  },
             ].map(({ num, label }) => (
-              <Box
-                key={label}
-                sx={{ backgroundColor: T.cardBgAlt, px: "20px", py: "18px", transition: "background-color 0.4s ease" }}
-              >
+              <Box key={label} sx={{ backgroundColor: T.cardBgAlt, px: "20px", py: "18px", transition: "background-color 0.4s ease" }}>
                 <Typography sx={{ fontSize: "20px", fontWeight: 500, color: T.primaryText, lineHeight: 1, mb: "6px", transition: "color 0.4s ease" }}>
                   {num}
                 </Typography>

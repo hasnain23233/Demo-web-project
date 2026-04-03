@@ -1,4 +1,3 @@
-// src/pages/home/subComponents/LogoStrip.tsx
 import { FC, useEffect, useRef } from "react";
 import { Box, Typography } from "@mui/material";
 import { useThemeMode } from "../../../../theme/theme";
@@ -20,28 +19,27 @@ export const LogoStrip: FC = () => {
   const { mode } = useThemeMode();
   const isLight = mode === "light";
 
-  const canvasRef  = useRef<HTMLCanvasElement>(null);
-  const wrapRef    = useRef<HTMLDivElement>(null);
-  const cardsRef   = useRef<HTMLDivElement[]>([]);
-  const smoothRef  = useRef({ x: 0.5, y: 0.5 });
-  const targetRef  = useRef({ x: 0.5, y: 0.5 });
-  const rafRef     = useRef<number>(0);
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+  const wrapRef   = useRef<HTMLDivElement>(null);
+  const cardsRef  = useRef<HTMLDivElement[]>([]);
+  const smoothRef = useRef({ x: 0.5, y: 0.5 });
+  const targetRef = useRef({ x: 0.5, y: 0.5 });
+  const rafRef    = useRef<number>(0);
 
-  // ── Derived tokens ──────────────────────────────────────────────────────
-  const bgColor      = isLight ? "#f5f7fb" : "#000435";
-  const borderColor  = isLight ? "#d0dff7" : "#1a1a1a";
-  const labelColor   = isLight ? "#8a9ab8" : "#978f8f";
-  const dc           = isLight ? "0,80,200" : "255,255,255";
+  // ── Theme tokens ────────────────────────────────────────────────────────
+  const bgColor     = isLight ? "#FFF4E3" : "#161616";
+  const borderColor = isLight ? "#d9c9b0" : "#2a2a2a";
+  const labelColor  = isLight ? "#6a6a6a" : "#BBC0C6";
+  const dc          = isLight ? "0,25,50"  : "187,192,198"; // Midnight / GreyCloud
 
-  // Canvas alpha multipliers — toned down for light bg
-  const dotBase   = isLight ? 0.025 : 0.03;
-  const dotBright = isLight ? 0.08  : 0.12;
-  const dotGlow   = isLight ? 0.28  : 0.40;
-  const lineBase  = isLight ? 0.05  : 0.08;
-  const lineBoost = isLight ? 0.12  : 0.20;
-  const partBase  = isLight ? 0.12  : 0.18;
-  const partBoost = isLight ? 0.28  : 0.45;
-  const ringAlpha = isLight ? 0.55  : 1.00;
+  const dotBase   = isLight ? 0.020 : 0.025;
+  const dotBright = isLight ? 0.06  : 0.10;
+  const dotGlow   = isLight ? 0.22  : 0.35;
+  const lineBase  = isLight ? 0.04  : 0.07;
+  const lineBoost = isLight ? 0.09  : 0.16;
+  const partBase  = isLight ? 0.10  : 0.15;
+  const partBoost = isLight ? 0.22  : 0.38;
+  const ringAlpha = isLight ? 0.45  : 0.90;
 
   const images = [
     isLight ? F1Light : F1Dark,
@@ -80,20 +78,18 @@ export const LogoStrip: FC = () => {
     };
     const onMouseLeave = () => { targetRef.current = { x: 0.5, y: 0.5 }; };
 
-    wrap.addEventListener("mousemove", onMouseMove);
+    wrap.addEventListener("mousemove",  onMouseMove);
     wrap.addEventListener("mouseleave", onMouseLeave);
-    window.addEventListener("resize", resize);
+    window.addEventListener("resize",   resize);
     resize();
 
     const loop = () => {
       time += 0.007;
-
       smoothRef.current.x += (targetRef.current.x - smoothRef.current.x) * 0.05;
       smoothRef.current.y += (targetRef.current.y - smoothRef.current.y) * 0.05;
       const { x: sx, y: sy } = smoothRef.current;
       const tiltX = (sy - 0.5) * 0.25;
       const tiltY = (sx - 0.5) * 0.25;
-
       const w  = W / devicePixelRatio;
       const h  = H / devicePixelRatio;
       const mx = sx * w;
@@ -103,7 +99,7 @@ export const LogoStrip: FC = () => {
       ctx.save();
       ctx.scale(devicePixelRatio, devicePixelRatio);
 
-      // ── 3D wave dot grid ──
+      // dot grid
       const cols = 32, rows = 10, cw = w / cols, rh = h / rows;
       for (let r = 0; r <= rows; r++) {
         for (let c = 0; c <= cols; c++) {
@@ -124,7 +120,7 @@ export const LogoStrip: FC = () => {
         }
       }
 
-      // ── Floating particles + connections ──
+      // particles + connections
       for (const p of particles) {
         p.x += p.vx + Math.sin(time + p.phase) * 6e-5;
         p.y += p.vy + Math.cos(time + p.phase * 0.8) * 5e-5;
@@ -137,9 +133,9 @@ export const LogoStrip: FC = () => {
         const dm    = Math.hypot(ax - mx, ay - my);
         const boost = Math.max(0, 1 - dm / 110);
         for (let j = i + 1; j < particles.length; j++) {
-          const b  = particles[j];
+          const b   = particles[j];
           const bx2 = b.x * w, by2 = b.y * h;
-          const d  = Math.hypot(ax - bx2, ay - by2);
+          const d   = Math.hypot(ax - bx2, ay - by2);
           if (d < 90) {
             ctx.beginPath();
             ctx.moveTo(ax, ay); ctx.lineTo(bx2, by2);
@@ -154,7 +150,7 @@ export const LogoStrip: FC = () => {
         ctx.fill();
       }
 
-      // ── Tilted orbital rings with travelling dots ──
+      // orbital rings
       const RINGS = [
         { rx: w * 0.38, ry: h * 0.22, speed:  0.18, alpha: 0.018, thick: 0.8 },
         { rx: w * 0.28, ry: h * 0.30, speed: -0.14, alpha: 0.025, thick: 0.6 },
@@ -185,14 +181,14 @@ export const LogoStrip: FC = () => {
 
       ctx.restore();
 
-      // ── 3D card tilt per logo ──
+      // 3D card tilt
       cardsRef.current.forEach((card, i) => {
         if (!card) return;
-        const depth  = DEPTHS[i] ?? 1;
-        const rotX   = (sy - 0.5) * 22 * depth * 0.45;
-        const rotY   = (sx - 0.5) * -22 * depth * 0.45;
-        const tz     = depth * 8;
-        const inner  = card.querySelector<HTMLElement>(".logo-inner");
+        const depth = DEPTHS[i] ?? 1;
+        const rotX  = (sy - 0.5) * 22 * depth * 0.45;
+        const rotY  = (sx - 0.5) * -22 * depth * 0.45;
+        const tz    = depth * 8;
+        const inner = card.querySelector<HTMLElement>(".logo-inner");
         if (inner) {
           inner.style.transform =
             `perspective(600px) rotateX(${rotX}deg) rotateY(${rotY}deg) translateZ(${tz}px)`;
@@ -206,11 +202,11 @@ export const LogoStrip: FC = () => {
 
     return () => {
       cancelAnimationFrame(rafRef.current);
-      wrap.removeEventListener("mousemove", onMouseMove);
+      wrap.removeEventListener("mousemove",  onMouseMove);
       wrap.removeEventListener("mouseleave", onMouseLeave);
-      window.removeEventListener("resize", resize);
+      window.removeEventListener("resize",   resize);
     };
-  }, [mode]); // re-run on mode change
+  }, [mode]);
 
   return (
     <Box
@@ -218,7 +214,7 @@ export const LogoStrip: FC = () => {
       sx={{
         position: "relative",
         backgroundColor: bgColor,
-        borderTop: `0.5px solid ${borderColor}`,
+        borderTop:    `0.5px solid ${borderColor}`,
         borderBottom: `0.5px solid ${borderColor}`,
         px: { xs: "24px", sm: "48px", lg: "80px" },
         py: { xs: "36px", sm: "48px" },
@@ -229,10 +225,9 @@ export const LogoStrip: FC = () => {
     >
       <canvas
         ref={canvasRef}
-        style={{ position: "absolute", inset: 0, width: "100%", height: "100%" , pointerEvents: "none" }}
+        style={{ position: "absolute", inset: 0, width: "100%", height: "100%", pointerEvents: "none" }}
       />
 
-      {/* Label */}
       <Typography sx={{
         position: "relative", zIndex: 2,
         fontSize: "11px", color: labelColor, letterSpacing: "0.08em",
@@ -243,7 +238,6 @@ export const LogoStrip: FC = () => {
         Trusted by teams building what's next
       </Typography>
 
-      {/* Logo cards */}
       <Box sx={{
         position: "relative", zIndex: 2,
         display: "flex",
@@ -291,12 +285,6 @@ export const LogoStrip: FC = () => {
               border: "0.5px solid transparent",
               transition: "border-color 0.3s, box-shadow 0.3s",
               pointerEvents: "none",
-              ".logo-card:hover &": {
-                borderColor: isLight ? "rgba(0,80,200,0.1)" : "rgba(255,255,255,0.08)",
-                boxShadow: isLight
-                  ? "0 0 30px rgba(0,80,200,0.04), 0 8px 40px rgba(0,0,0,0.06)"
-                  : "0 0 30px rgba(255,255,255,0.03), 0 8px 40px rgba(0,0,0,0.5)",
-              },
             }} />
           </Box>
         ))}
