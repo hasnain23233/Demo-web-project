@@ -6,6 +6,8 @@ import { useThemeMode } from "../../../../theme/theme";
 import lightMode from '../../../../assets/Images/CodeImages/CodeImage1Light.png'
 import darkMode from '../../../../assets/Images/CodeImages/CodeImage1Dark.png'
 
+import { PerformanceNodes } from '../../../../components/model3DAnimation'
+
 import Code2ImageDark from '../../../../assets/Images/CodeImages/Code2ImageDark.gif'
 import CodeImage3LightChat from '../../../../assets/Images/CodeImages/CodeImage3LightChat.gif'
 
@@ -475,27 +477,10 @@ export const FirstImageSection: FC = () => {
           }}
         >
           <TopGlow tokens={T} />
-          <CornerAccents color={T.secondaryText} />
-          <ColdAnimation type="crystal-cage" isDark={isDark} />
+          <CornerAccents color={T.secondaryText} /> 
+          
+          <PerformanceNodes />
 
-          <Box
-              component="img"
-              src={isDark ? Code2ImageDark : CodeImage3LightChat}
-              alt="Code preview"
-              sx={{
-                position: "absolute",
-                top: "50%",
-                left: "50%",
-                transform: "translate(-50%, -50%)",
-                width: { xs: "60%", sm: "65%", md: "60%" },
-                height: "auto",
-                borderRadius: "10px",
-                zIndex: 10,
-                pointerEvents: "none",
-                opacity: 0.92,
-                transition: "opacity 0.4s ease",
-              }}
-            />
           <Box sx={{ zIndex: 12, position: "absolute", bottom: "16px", left: "16px", display: "flex", alignItems: "center", gap: "6px" }}>
             <Sparkles size={13} color={T.accent} />
             <Typography sx={{ fontSize: "10px", color: T.accent, fontFamily: "monospace", letterSpacing: "0.06em", transition: "color 0.4s ease" }}>
