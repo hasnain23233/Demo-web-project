@@ -28,9 +28,9 @@ export const LogoStrip: FC = () => {
   const rafRef     = useRef<number>(0);
 
   // ── Derived tokens ──────────────────────────────────────────────────────
-  const bgColor      = isLight ? "#f5f7fb" : "#040404";
+  const bgColor      = isLight ? "#f5f7fb" : "#000435";
   const borderColor  = isLight ? "#d0dff7" : "#1a1a1a";
-  const labelColor   = isLight ? "#8a9ab8" : "#333333";
+  const labelColor   = isLight ? "#8a9ab8" : "#978f8f";
   const dc           = isLight ? "0,80,200" : "255,255,255";
 
   // Canvas alpha multipliers — toned down for light bg
@@ -229,7 +229,7 @@ export const LogoStrip: FC = () => {
     >
       <canvas
         ref={canvasRef}
-        style={{ position: "absolute", inset: 0, width: "100%", height: "100%", pointerEvents: "none" }}
+        style={{ position: "absolute", inset: 0, width: "100%", height: "100%" , pointerEvents: "none" }}
       />
 
       {/* Label */}

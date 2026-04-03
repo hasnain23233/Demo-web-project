@@ -49,29 +49,30 @@ export const ChatBoxSection: FC = () => {
   const rafRef      = useRef<number>(0);
 
   // ── Derived tokens ──────────────────────────────────────────────────────
-  const bgColor          = isLight ? "#f5f7fb"              : "#040404";
-  const labelColor       = isLight ? "#8a9ab8"              : "#333333";
+  const bgColor          = isLight ? "#f5f7fb"              : "#000435";
+  const labelColor       = isLight ? "#8a9ab8"              : "#8a8585";
   const starColor        = isLight ? "#0055ff"              : "#ffffff";
   const headlineColor    = isLight ? "#0d0d0d"              : "#ffffff";
-  const subTextColor     = isLight ? "#4a4545"              : "#444444";
+  const subTextColor     = isLight ? "#4a4545"              : "#8a8585";
+
   const cardBg           = isLight ? "#ffffff"              : "#0e0e0e";
   const cardBorderIdle   = isLight ? "#d0dff7"              : "#1e1e1e";
   const cardBorderFocused= isLight ? "#8faad8"              : "#3a3a3a";
   const inputBg          = isLight ? "#f0f5ff"              : "#080808";
-  const inputBorder      = isLight ? "#d0dff7"              : "#1e1e1e";
-  const inputBorderHover = isLight ? "#8faad8"              : "#333333";
+  const inputBorder      = isLight ? "#d0dff7"              : "#6e6d6d";
+  const inputBorderHover = isLight ? "#8faad8"              : "#7c7c7c";
   const inputBorderFocus = isLight ? "#0a84ff"              : "#444444";
-  const inputText        = isLight ? "#0d0d0d"              : "#bbbbbb";
-  const placeholderColor = isLight ? "#a0aec0"              : "#333333";
+  const inputText        = isLight ? "#0d0d0d"              : "#f1e8e8";
+  const placeholderColor = isLight ? "#a0aec0"              : "#c4bfbf";
   const chipBorder       = isLight ? "#d0dff7"              : "#1e1e1e";
   const chipBorderHover  = isLight ? "#8faad8"              : "#3a3a3a";
   const chipBgHover      = isLight ? "#eef3fc"              : "#0d0d0d";
-  const chipText         = isLight ? "#4a5a7a"              : "#444444";
+  const chipText         = isLight ? "#4a5a7a"              : "#a59f9f";
   const sendBtnActiveBg  = isLight ? "#0a1a3a"              : "#ffffff";
   const sendBtnActiveColor = isLight ? "#ffffff"            : "#000000";
   const sendBtnActiveHover = isLight ? "#0d2255"            : "#e0e0e0";
-  const sendBtnIdleBg    = isLight ? "#eef3fc"              : "#111111";
-  const sendBtnIdleColor = isLight ? "#a0aec0"              : "#333333";
+  const sendBtnIdleBg    = isLight ? "#eef3fc"              : "#fff6f6";
+  const sendBtnIdleColor = isLight ? "#a0aec0"              : "#eee3e3";
 
   // Canvas colour channel
   const dc = isLight ? "0,80,200" : "255,255,255";
@@ -293,7 +294,7 @@ export const ChatBoxSection: FC = () => {
           }} />
           Ask anything
           <Box component="span" sx={{
-            width: "7px", height: "7px", background: starColor, opacity: 0.7,
+            width: "7px", height: "7px", background: starColor, opacity: 0.9,
             clipPath: "polygon(50% 0%,61% 35%,98% 35%,68% 57%,79% 91%,50% 70%,21% 91%,32% 57%,2% 35%,39% 35%)",
             animation: "spinStar 4s linear infinite reverse",
             "@keyframes spinStar": { to: { transform: "rotate(360deg)" } },

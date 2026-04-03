@@ -44,22 +44,25 @@ export const FirstGeneralSection: FC = () => {
   const animationRef = useRef<number | null>(null);
   const materialsRef = useRef<THREE.PointsMaterial[]>([]);
 
-  // ── Derived tokens ──────────────────────────────────────────────────────
-  const bgColor          = isLight ? "#f5f7fb"   : "#080808";
-  const borderColor      = isLight ? "#d0dff7"   : "#1a1a1a";
-  const eyebrowColor     = isLight ? "#8a9ab8"   : "#444444";
-  const headlineColor    = isLight ? "#0d0d0d"   : "#ffffff";
-  const headlineFaded    = isLight ? "#b0b8cc"   : "#333333";
-  const subTextColor     = isLight ? "#4a4545"   : "#888888";
-  const gridGapColor     = isLight ? "#d0dff7"   : "#1a1a1a";
-  const cardBg           = isLight ? "#ffffff"   : "#080808";
-  const cardHoverBg      = isLight ? "rgba(0,0,0,0.015)" : "rgba(255,255,255,0.02)";
-  const indexColor       = isLight ? "#b0b8cc"   : "#333333";
-  const titleColor       = isLight ? "#0d0d0d"   : "#ffffff";
-  const bodyColor        = isLight ? "#4a4545"   : "#888888";
+  // ── Design tokens ──────────────────────────────────────────────────────────
+  // Dark  → client-requested dark navy + white palette
+  // Light → clean white + navy (same palette, cleanly inverted)
+  const bgColor          = isLight ? "#f0f4ff"                   : "#000c2e";
+  const borderColor      = isLight ? "#c2d0f0"                   : "#1a2a5e";
+  const eyebrowColor     = isLight ? "#5a7ab5"                   : "#5a7ab5";
+  const headlineColor    = isLight ? "#000c2e"                   : "#ffffff";
+  const headlineFaded    = isLight ? "#3a5a9e"                   : "#2e4a8a";
+  const subTextColor     = isLight ? "#3a4e78"                   : "#6b7fa8";
+  const gridGapColor     = isLight ? "#c2d0f0"                   : "#1a2a5e";
+  const gridBorder       = isLight ? "#000c2e"                   : "#ffffff";
+  const cardBg           = isLight ? "#ffffff"                   : "#000c2e";
+  const cardHoverBg      = isLight ? "rgba(0,12,46,0.03)"        : "rgba(255,255,255,0.03)";
+  const indexColor       = isLight ? "#3a5a9e"                   : "#2e4a8a";
+  const titleColor       = isLight ? "#000c2e"                   : "#ffffff";
+  const bodyColor        = isLight ? "#3a4e78"                   : "#5a7ab5";
 
-  // Three.js default particle colour
-  const defaultParticleColor = isLight ? 0xbbbbbb : 0x333333;
+  // Navy-tinted particles in both modes; slightly brighter in light so rings are visible
+  const defaultParticleColor = isLight ? 0x3a5a9e : 0x1a3a7a;
 
   useEffect(() => {
     if (!containerRef.current) return;
@@ -137,7 +140,7 @@ export const FirstGeneralSection: FC = () => {
             material.color.lerp(hslColor, 0.1);
           } else {
             material.size    = 0.12;
-            material.opacity = isLight ? 0.3 : 0.4;
+            material.opacity = isLight ? 0.45 : 0.4;
             const defaultColor = new THREE.Color(defaultParticleColor);
             material.color.lerp(defaultColor, 0.05);
           }
@@ -169,13 +172,13 @@ export const FirstGeneralSection: FC = () => {
       }
       renderer.dispose();
     };
-  }, [hoveredIndex, mode]); // re-run on mode change
+  }, [hoveredIndex, mode]); // re-run on mode change so particle colour updates
 
   return (
     <Box
       sx={{
         backgroundColor: bgColor,
-        borderTop: `0.5px solid ${borderColor}`,
+        borderTop:    `0.5px solid ${borderColor}`,
         borderBottom: `0.5px solid ${borderColor}`,
         px: { xs: "24px", sm: "48px", lg: "80px" },
         py: { xs: "80px", sm: "100px", md: "130px" },
@@ -184,17 +187,20 @@ export const FirstGeneralSection: FC = () => {
         transition: "background-color 0.4s ease, border-color 0.4s ease",
       }}
     >
+      {/* Three.js particle rings background */}
       <Box
         ref={containerRef}
         sx={{
           position: "absolute", top: 0, left: 0,
           width: "100%", height: "100%",
           zIndex: 0, pointerEvents: "none",
-          opacity: isLight ? 0.5 : 0.7, // tone down 3D bg in light
+          opacity: isLight ? 0.55 : 0.7,
+          transition: "opacity 0.4s ease",
         }}
       />
 
       <Box sx={{ position: "relative", zIndex: 1 }}>
+        {/* ── Header row ── */}
         <Stack
           direction={{ xs: "column", md: "row" }}
           justifyContent="space-between"
@@ -204,18 +210,24 @@ export const FirstGeneralSection: FC = () => {
         >
           <Box>
             <Typography sx={{
-              fontSize: "11px", color: eyebrowColor,
-              letterSpacing: "0.08em", textTransform: "uppercase",
-              fontWeight: 600, mb: "16px",
+              fontSize: "11px",
+              color: eyebrowColor,
+              letterSpacing: "0.08em",
+              textTransform: "uppercase",
+              fontWeight: 600,
+              mb: "16px",
               transition: "color 0.4s ease",
             }}>
               ✦ Why we're different
             </Typography>
             <Typography sx={{
               fontSize: { xs: "32px", sm: "44px", md: "56px" },
-              fontWeight: 500, color: headlineColor,
-              lineHeight: 1.1, letterSpacing: "-0.02em",
-              fontFamily: "'Georgia', serif", maxWidth: "520px",
+              fontWeight: 500,
+              color: headlineColor,
+              lineHeight: 1.1,
+              letterSpacing: "-0.02em",
+              fontFamily: "'Georgia', serif",
+              maxWidth: "520px",
               transition: "color 0.4s ease",
             }}>
               We don't consult.{" "}
@@ -226,8 +238,10 @@ export const FirstGeneralSection: FC = () => {
           </Box>
 
           <Typography sx={{
-            fontSize: "15px", color: subTextColor,
-            lineHeight: 1.75, maxWidth: "340px",
+            fontSize: "15px",
+            color: subTextColor,
+            lineHeight: 1.75,
+            maxWidth: "340px",
             transition: "color 0.4s ease",
           }}>
             Born from frustration with agencies that talk about AI but can't ship
@@ -236,10 +250,15 @@ export const FirstGeneralSection: FC = () => {
           </Typography>
         </Stack>
 
+        {/* ── Principles grid ── */}
         <Grid
           container
           spacing={{ xs: "1px", md: "1px" }}
-          sx={{ backgroundColor: gridGapColor, transition: "background-color 0.4s ease" }}
+          sx={{
+            backgroundColor: gridGapColor,
+            border: `2px solid ${gridBorder}`,
+            transition: "background-color 0.4s ease, border-color 0.4s ease",
+          }}
         >
           {PRINCIPLES.map((p, i) => (
             <Grid key={p.index} size={{ xs: 12, sm: 6 }}>
@@ -261,7 +280,7 @@ export const FirstGeneralSection: FC = () => {
                   position: "absolute", top: 0, left: 0,
                   width: "4px", height: "100%",
                   backgroundColor: hoveredIndex === i
-                    ? `hsl(${p.hue * 360}, 80%, 50%)`
+                    ? `hsl(${p.hue * 360}, 80%, 55%)`
                     : "transparent",
                   transition: "background-color 0.3s ease",
                 }} />
@@ -269,23 +288,32 @@ export const FirstGeneralSection: FC = () => {
                 <Typography sx={{
                   fontSize: "11px",
                   color: hoveredIndex === i
-                    ? `hsl(${p.hue * 360}, 80%, 50%)`
+                    ? `hsl(${p.hue * 360}, 80%, 55%)`
                     : indexColor,
-                  fontFamily: "monospace", mb: "20px",
-                  letterSpacing: "0.04em", transition: "color 0.3s ease",
+                  fontFamily: "monospace",
+                  mb: "20px",
+                  letterSpacing: "0.04em",
+                  transition: "color 0.3s ease",
                 }}>
                   {p.index}
                 </Typography>
+
                 <Typography sx={{
-                  fontSize: { xs: "18px", sm: "20px" }, fontWeight: 500,
-                  color: titleColor, mb: "12px", letterSpacing: "-0.01em",
+                  fontSize: { xs: "18px", sm: "20px" },
+                  fontWeight: 500,
+                  color: titleColor,
+                  mb: "12px",
+                  letterSpacing: "-0.01em",
                   transition: "color 0.4s ease",
                 }}>
                   {p.title}
                 </Typography>
+
                 <Typography sx={{
-                  fontSize: "14px", color: bodyColor,
-                  lineHeight: 1.75, transition: "color 0.4s ease",
+                  fontSize: "14px",
+                  color: bodyColor,
+                  lineHeight: 1.75,
+                  transition: "color 0.4s ease",
                 }}>
                   {p.body}
                 </Typography>

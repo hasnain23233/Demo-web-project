@@ -2,7 +2,8 @@ import { useState } from 'react'
 import {Route, Routes } from 'react-router-dom'
 import { Navbar, Footer } from "./components";
 import './App.css'
-import { Home, About, Products} from './views'
+import { Home, Products} from './views'
+import About from './views/About/About'
 
 function App() {
 

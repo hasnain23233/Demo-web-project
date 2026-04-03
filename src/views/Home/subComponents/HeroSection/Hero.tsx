@@ -23,7 +23,7 @@ export const Hero: FC = () => {
 
   // ── Derived tokens (mirrors FirstImageSection pattern) ──────────────────
   const isLight         = mode === "light";
-  const bgColor         = isLight ? "#f5f7fb"          : "#040404";
+  const bgColor         = isLight ? "#f5f7fb"          : "#000435";
   const cardBgColor     = isLight ? "#ffffff"          : "#080808";
   const borderColor     = isLight ? "#d0dff7"          : "#161616";
   const borderColorInner= isLight ? "#cdd8f0"          : "#1e1e1e";
@@ -64,7 +64,7 @@ export const Hero: FC = () => {
   const tickerBorder    = isLight ? "#d0dff7"          : "#161616";
   const tickerPillBg    = isLight ? "#eef3fc"          : "#080808";
   const tickerPillBorder= isLight ? "#cdd8f0"          : "#1e1e1e";
-  const tickerText      = isLight ? "#8a9ab8"          : "#444444";
+  const tickerText      = isLight ? "#8a9ab8"          : "#979595";
 
   useEffect(() => {
     const canvas = canvasRef.current!;
