@@ -3,8 +3,8 @@ import { Box, Stack, Typography } from "@mui/material";
 import * as THREE from "three";
 import { Snowflake, Sparkles } from "lucide-react";
 import { useThemeMode } from "../../../../theme/theme";
-import lightModeImg from "../../../../assets/Images/CodeImages/CodeImage1Light.png";
-import darkModeImg  from "../../../../assets/Images/CodeImages/CodeImage1Dark.png";
+import lightModeImg from "../../../../assets/Images/CodeImages/CodeImageOneLight.gif";
+import darkModeImg  from "../../../../assets/Images/CodeImages/Code2ImageDark.gif";
 import { PerformanceNodes } from "../../../../components/model3DAnimation";
 
 // ── Theme tokens ─────────────────────────────────────────────────────────────
@@ -307,7 +307,7 @@ export const FirstImageSection: FC = () => {
             sx={{
               position: "absolute", top: "50%", left: "50%",
               transform: "translate(-50%, -50%)",
-              width: { xs: "80%", sm: "85%", md: "90%" },
+              width: { xs: "70%", sm: "75%", md: "70%" },
               height: "auto", borderRadius: "10px",
               zIndex: 10, pointerEvents: "none",
               opacity: 0.92, transition: "opacity 0.4s ease",

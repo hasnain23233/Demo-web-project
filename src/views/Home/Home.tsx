@@ -9,7 +9,7 @@ import {
   SecondGeneralSection,
   ChatBoxSection,
 } from "./subComponents";
-import { Layout } from "../../layout";
+import { Layout } from "../../layout"; 
 
 export const Home: FC = () => {
   return (
@@ -21,7 +21,7 @@ export const Home: FC = () => {
         <FirstImageSection />
         <FirstGeneralSection />
         <SecondImageSection />
-        <SecondGeneralSection />
+        <SecondGeneralSection /> 
       </Box>
     </Layout>
   );

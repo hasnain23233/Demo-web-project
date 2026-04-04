@@ -3,6 +3,7 @@ import { FC, useState, useEffect, useRef } from "react";
 import { Box, Typography, TextField, InputAdornment, IconButton } from "@mui/material";
 import SendIcon from "@mui/icons-material/Send";
 import { useThemeMode } from "../../../../theme/theme";
+import Model3D from "../../../../components/Model3D";
 
 // ─────────────────────────────────────────────────────────────────
 // CONSTANTS
@@ -378,6 +379,8 @@ export const ChatBoxSection: FC = () => {
         transitionTimingFunction: "ease, cubic-bezier(0.22,1,0.36,1), cubic-bezier(0.22,1,0.36,1)",
       }}
     >
+      <Model3D/>
+
       {/* Canvas — pointer-events:none, zIndex:0, never captures anything */}
       <canvas
         ref={canvasRef}
