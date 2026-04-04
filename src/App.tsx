@@ -4,6 +4,8 @@ import { Navbar, Footer } from "./components";
 import './App.css'
 import { Home, Products} from './views'
 import About from './views/About/About'
+import './App.css'
+import './../public/fonts/Nasalization-Regular.ttf'
 
 function App() {
 

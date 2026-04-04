@@ -11,44 +11,55 @@ import logoLight from "../../assets/lightLogo.png";
 import logoDark from "../../assets/darkLogo.png";
 import { useThemeMode } from "../../theme/theme";
 
+// ── Load Nasalization font ─────────────────────────────────────────────────────
+const nasalizationStyle = document.createElement("style");
+nasalizationStyle.textContent = `
+  @font-face {
+    font-family: 'Nasalization';
+    src: url('https://fonts.cdnfonts.com/s/16578/nasalization-rg.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+  }
+`;
+if (!document.head.querySelector("[data-font='nasalization']")) {
+  nasalizationStyle.setAttribute("data-font", "nasalization");
+  document.head.appendChild(nasalizationStyle);
+}
+
 interface Props { window?: () => Window }
 const drawerWidth = 280;
 const navItems = ["About", "Products", "Solutions", "Resources", "Use Cases"];
 
-// ── Design tokens — aligned to your exact palette ─────────────────────────────
-// Dark:  Black (#161616) bg, Cream (#FFF4E3) primary text, Grey Cloud secondary
-// Light: Cream (#FFF4E3) bg, Midnight (#001932) primary text, warm tan borders
 const getTokens = (isDark: boolean) => ({
-  // AppBar
   scrolledBg:        isDark ? "rgba(22,22,22,0.92)"     : "rgba(255,244,227,0.92)",
   border:            isDark ? "#2a2a2a"                  : "#d9c9b0",
-  // Text
   textPrimary:       isDark ? "#FFF4E3"                  : "#001932",
   textSecondary:     isDark ? "#BBC0C6"                  : "#4a4a6a",
-  // Hover surface (subtle fill on nav items)
   surfaceSubtle:     isDark ? "#1e1e1e"                  : "#f0e8da",
-  // Active dot under current route
   activeDot:         isDark ? "#FFF4E3"                  : "#001932",
-  // CTA "Book a Demo" button
   ctaBorder:         isDark ? "#2a2a2a"                  : "#d9c9b0",
   ctaHoverBg:        isDark ? "#FFF4E3"                  : "#001932",
   ctaHoverText:      isDark ? "#001932"                  : "#FFF4E3",
   ctaHoverBorder:    isDark ? "#FFF4E3"                  : "#001932",
-  // Theme toggle pill
   toggleBg:          isDark ? "#1e1e1e"                  : "#f0e8da",
   toggleBorder:      isDark ? "#2a2a2a"                  : "#d9c9b0",
   toggleBorderHover: isDark ? "#BBC0C6"                  : "#001932",
   toggleKnob:        isDark ? "#FFF4E3"                  : "#001932",
   toggleIcon:        isDark ? "#3a3a3a"                  : "#BBC0C6",
-  // Mobile drawer
   drawerBg:          isDark ? "#161616"                  : "#FFF4E3",
   drawerBorder:      isDark ? "#2a2a2a"                  : "#d9c9b0",
   drawerLinkBorder:  isDark ? "#2a2a2a"                  : "#d9c9b0",
   drawerActiveLine:  isDark ? "#FFF4E3"                  : "#001932",
-  // Icon buttons (hamburger, close)
   iconBtnBorder:     isDark ? "#2a2a2a"                  : "#d9c9b0",
   iconBtnHoverBg:    isDark ? "#1e1e1e"                  : "#f0e8da",
 });
+
+// ── Shared font style ──────────────────────────────────────────────────────────
+const nasalizationFont = {
+  fontFamily: "'Nasalization', sans-serif",
+  letterSpacing: "0.05em",
+};
 
 // ── Theme toggle pill ─────────────────────────────────────────────────────────
 const ThemeToggle: React.FC<{
@@ -87,7 +98,6 @@ const ThemeToggle: React.FC<{
         transition: "border-color 0.2s ease, background-color 0.4s ease",
       }}
     >
-      {/* Sliding knob */}
       <Box
         sx={{
           position: "absolute",
@@ -99,8 +109,7 @@ const ThemeToggle: React.FC<{
           backgroundColor: T.toggleKnob,
           borderRadius: "50%",
           zIndex: 2,
-          transition:
-            "left 0.3s cubic-bezier(0.34,1.56,0.64,1), background-color 0.4s ease",
+          transition: "left 0.3s cubic-bezier(0.34,1.56,0.64,1), background-color 0.4s ease",
         }}
       />
       <LightMode sx={{ color: T.toggleIcon, fontSize: "14px", zIndex: 1, transition: "color 0.4s ease" }} />
@@ -153,7 +162,6 @@ export const Navbar: React.FC<Props> = (props) => {
         transition: "background-color 0.4s ease",
       }}
     >
-      {/* Header row */}
       <Box
         sx={{
           display: "flex",
@@ -184,7 +192,6 @@ export const Navbar: React.FC<Props> = (props) => {
         </IconButton>
       </Box>
 
-      {/* Nav links */}
       <List sx={{ flex: 1, p: 0 }}>
         {navItems.map((item) => {
           const active = isActive(item);
@@ -204,10 +211,12 @@ export const Navbar: React.FC<Props> = (props) => {
                     color: T.textPrimary,
                   },
                   "& .MuiListItemText-primary": {
-                    fontSize: "15px",
+                    fontSize: "13px",
                     fontWeight: active ? 500 : 400,
                     color: "inherit",
                     transition: "color 0.2s ease",
+                    // ── Nasalization applied to mobile nav links ──
+                    ...nasalizationFont,
                   },
                 }}
               >
@@ -238,7 +247,6 @@ export const Navbar: React.FC<Props> = (props) => {
         })}
       </List>
 
-      {/* Bottom: CTA + theme toggle */}
       <Box sx={{ mt: 3, display: "flex", flexDirection: "column", gap: 2 }}>
         <Button
           component={Link}
@@ -251,11 +259,12 @@ export const Navbar: React.FC<Props> = (props) => {
             border: `0.5px solid ${T.ctaBorder}`,
             borderRadius: "8px",
             color: T.textPrimary,
-            fontSize: "13px",
+            fontSize: "12px",
             fontWeight: 500,
             textTransform: "none",
-            transition:
-              "background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease",
+            // ── Nasalization applied to mobile CTA ──
+            ...nasalizationFont,
+            transition: "background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease",
             "&:hover": {
               backgroundColor: T.ctaHoverBg,
               color: T.ctaHoverText,
@@ -284,12 +293,9 @@ export const Navbar: React.FC<Props> = (props) => {
           backgroundColor: scrolled ? T.scrolledBg : "transparent",
           backdropFilter: scrolled ? "blur(16px)" : "none",
           WebkitBackdropFilter: scrolled ? "blur(16px)" : "none",
-          borderBottom: `0.5px solid ${
-            scrolled ? T.border : "transparent"
-          }`,
+          borderBottom: `0.5px solid ${scrolled ? T.border : "transparent"}`,
           boxShadow: "none",
-          transition:
-            "background-color 0.35s ease, border-color 0.35s ease, backdrop-filter 0.35s ease",
+          transition: "background-color 0.35s ease, border-color 0.35s ease, backdrop-filter 0.35s ease",
           px: { xs: "20px", sm: "48px", lg: "80px" },
         }}
       >
@@ -343,22 +349,21 @@ export const Navbar: React.FC<Props> = (props) => {
                   disableRipple
                   sx={{
                     color: active ? T.textPrimary : T.textSecondary,
-                    fontSize: "13px",
+                    fontSize: "12px",
                     fontWeight: active ? 500 : 400,
                     textTransform: "none",
                     px: "14px",
                     py: "7px",
                     borderRadius: "6px",
                     minWidth: 0,
-                    letterSpacing: "0.01em",
-                    transition:
-                      "color 0.2s ease, background-color 0.2s ease",
+                    // ── Nasalization applied to desktop nav links ──
+                    ...nasalizationFont,
+                    transition: "color 0.2s ease, background-color 0.2s ease",
                     "&:hover": {
                       color: T.textPrimary,
                       backgroundColor: T.surfaceSubtle,
                     },
                     position: "relative",
-                    // Active indicator dot
                     "&::after": active
                       ? {
                           content: '""',
@@ -400,12 +405,12 @@ export const Navbar: React.FC<Props> = (props) => {
                 border: `0.5px solid ${T.ctaBorder}`,
                 borderRadius: "8px",
                 color: T.textPrimary,
-                fontSize: "13px",
+                fontSize: "12px",
                 fontWeight: 500,
                 textTransform: "none",
-                letterSpacing: "0.01em",
-                transition:
-                  "background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease, transform 0.15s ease",
+                // ── Nasalization applied to desktop CTA ──
+                ...nasalizationFont,
+                transition: "background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease, transform 0.15s ease",
                 "&:hover": {
                   backgroundColor: T.ctaHoverBg,
                   color: T.ctaHoverText,
@@ -430,8 +435,7 @@ export const Navbar: React.FC<Props> = (props) => {
               border: `0.5px solid ${T.iconBtnBorder}`,
               borderRadius: "8px",
               padding: "8px",
-              transition:
-                "background-color 0.2s ease, border-color 0.2s ease",
+              transition: "background-color 0.2s ease, border-color 0.2s ease",
               "&:hover": { backgroundColor: T.iconBtnHoverBg },
             }}
           >
@@ -456,8 +460,7 @@ export const Navbar: React.FC<Props> = (props) => {
               backgroundColor: T.drawerBg,
               border: "none",
               borderRight: `0.5px solid ${T.drawerBorder}`,
-              transition:
-                "background-color 0.4s ease, border-color 0.4s ease",
+              transition: "background-color 0.4s ease, border-color 0.4s ease",
             },
           }}
         >
