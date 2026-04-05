@@ -195,6 +195,7 @@ export const Footer: FC = () => {
               lineHeight: 1.8,
               maxWidth: "200px",
               transition: "color 0.4s ease",
+              fontFamily: "Nasalization"
             }}
           >
             Production-grade AI systems built for companies defining what's next.
@@ -370,6 +371,7 @@ export const Footer: FC = () => {
               color: T.newsletterDisclaim,
               lineHeight: 1.6,
               transition: "color 0.4s ease",
+              fontFamily: "Nasalization"
             }}
           >
             No spam. Unsubscribe any time.
@@ -395,7 +397,7 @@ export const Footer: FC = () => {
             fontWeight: 600,
             lineHeight: 1,
             letterSpacing: "-0.04em",
-            fontFamily: "'Georgia', 'Times New Roman', serif",
+            fontFamily: "Nasalization",
             // Dark: filled with near-black so it reads as a ghost stamp
             // Light: transparent fill, only the stroke shows
             color: T.wordmarkColor,

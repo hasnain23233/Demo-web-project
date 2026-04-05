@@ -457,7 +457,7 @@ export const PerformanceNodes: FC = () => {
             }} />
             <Box sx={{
               fontSize:   "10px",
-              fontFamily: "monospace",
+              fontFamily: "Nasalization",
               color:      "rgba(255,255,255,0.45)",
             }}>
               {label}
@@ -472,7 +472,7 @@ export const PerformanceNodes: FC = () => {
         top:           "14px",
         right:         "16px",
         fontSize:      "10px",
-        fontFamily:    "monospace",
+        fontFamily: "Nasalization"  ,
         color:         "rgba(255,255,255,0.22)",
         pointerEvents: "none",
         userSelect:    "none",

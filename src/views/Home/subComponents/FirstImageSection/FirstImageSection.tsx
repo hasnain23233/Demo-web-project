@@ -232,7 +232,7 @@ export const FirstImageSection: FC = () => {
           <TopGlow tokens={T} />
 
           <Box sx={{ display: "flex", alignItems: "center", gap: "10px" }}>
-            <Typography sx={{ fontSize: "11px", color: T.secondaryText, fontFamily: "monospace", letterSpacing: "0.06em" }}>01</Typography>
+            <Typography sx={{ fontSize: "11px", color: T.secondaryText, fontFamily: "Nasalization", letterSpacing: "0.06em" }}>01</Typography>
             <Box sx={{ width: "40px", height: "0.5px", backgroundColor: T.stroke }} />
             <Typography sx={{ fontSize: "11px", color: T.secondaryText, textTransform: "uppercase", letterSpacing: "0.08em", fontWeight: 500 }}>
               How it works
@@ -244,7 +244,7 @@ export const FirstImageSection: FC = () => {
               fontSize: { xs: "30px", sm: "38px", md: "46px", lg: "52px" },
               fontWeight: 500, color: T.primaryText,
               lineHeight: 1.1, letterSpacing: "-0.025em",
-              fontFamily: "'Georgia', serif", mb: "12px",
+              fontFamily: "Nasalization" , mb: "12px",
               transition: "color 0.4s ease",
             }}>
               Built for scale,
@@ -252,7 +252,7 @@ export const FirstImageSection: FC = () => {
             <Typography sx={{
               fontSize: { xs: "30px", sm: "38px", md: "46px", lg: "52px" },
               fontWeight: 500, lineHeight: 1.1,
-              letterSpacing: "-0.025em", fontFamily: "'Georgia', serif",
+              letterSpacing: "-0.025em", fontFamily: "Nasalization",
               color: T.fadedText, transition: "color 0.4s ease",
             }}>
               not just for demos.
@@ -315,7 +315,7 @@ export const FirstImageSection: FC = () => {
           />
           <Box sx={{ zIndex: 12, position: "absolute", bottom: "16px", left: "16px", display: "flex", alignItems: "center", gap: "6px" }}>
             <Snowflake size={13} color={T.accent} />
-            <Typography sx={{ fontSize: "10px", color: T.accent, fontFamily: "monospace", letterSpacing: "0.06em" }}>
+            <Typography sx={{ fontSize: "10px", color: T.accent, fontFamily: "Nasalization", letterSpacing: "0.06em" }}>
               LIVE: COLD FROST NODES SYSTEM
             </Typography>
           </Box>
@@ -391,7 +391,7 @@ export const FirstImageSection: FC = () => {
           <PerformanceNodes />
           <Box sx={{ zIndex: 12, position: "absolute", bottom: "16px", left: "16px", display: "flex", alignItems: "center", gap: "6px" }}>
             <Sparkles size={13} color={T.accent} />
-            <Typography sx={{ fontSize: "10px", color: T.accent, fontFamily: "monospace", letterSpacing: "0.06em" }}>
+            <Typography sx={{ fontSize: "10px", color: T.accent, fontFamily: "Nasalization", letterSpacing: "0.06em" }}>
               LIVE: 3D CYBERNETIC GEOMETRY
             </Typography>
           </Box>
@@ -410,7 +410,7 @@ export const FirstImageSection: FC = () => {
           <TopGlow tokens={T} />
 
           <Box sx={{ display: "flex", alignItems: "center", gap: "10px" }}>
-            <Typography sx={{ fontSize: "11px", color: T.secondaryText, fontFamily: "monospace", letterSpacing: "0.06em" }}>02</Typography>
+            <Typography sx={{ fontSize: "11px", color: T.secondaryText, fontFamily: "Nasalization", letterSpacing: "0.06em" }}>02</Typography>
             <Box sx={{ width: "40px", height: "0.5px", backgroundColor: T.stroke }} />
             <Typography sx={{ fontSize: "11px", color: T.secondaryText, textTransform: "uppercase", letterSpacing: "0.08em", fontWeight: 500 }}>
               Our approach
@@ -421,7 +421,7 @@ export const FirstImageSection: FC = () => {
             fontSize: { xs: "30px", sm: "36px", md: "42px" },
             fontWeight: 500, color: T.primaryText,
             lineHeight: 1.1, letterSpacing: "-0.02em",
-            fontFamily: "'Georgia', serif", transition: "color 0.4s ease",
+            fontFamily: "Nasalization" , transition: "color 0.4s ease",
           }}>
             Engineers first.{" "}
             <Box component="span" sx={{ color: T.fadedText, transition: "color 0.4s ease" }}>

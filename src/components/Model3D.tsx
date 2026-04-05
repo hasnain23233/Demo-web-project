@@ -134,13 +134,13 @@ function Stat({ value, label, delay, T }: {
       <span style={{
         fontSize: "22px", fontWeight: 700,
         color: T.statValue,
-        fontFamily: "'Georgia','Times New Roman',serif",
+        fontFamily: "Nasalization",
         letterSpacing: "-0.03em", lineHeight: 1,
         transition: "color 0.4s ease",
       }}>{value}</span>
       <span style={{
         fontSize: "9px", color: T.statLabel,
-        fontFamily: "'DM Mono','Courier New',monospace",
+        fontFamily: "Nasalization",
         letterSpacing: "2px", textTransform: "uppercase",
         transition: "color 0.4s ease",
       }}>{label}</span>
@@ -162,7 +162,7 @@ function Pill({ icon, label, active, onClick, T }: {
       background: active ? T.pillBgActive : "transparent",
       color: active ? T.pillTextActive : T.pillText,
       fontSize: "11px",
-      fontFamily: "'DM Mono','Courier New',monospace",
+      fontFamily: "Nasalization",
       letterSpacing: "1.5px", textTransform: "uppercase",
       cursor: "pointer",
       transition: "all 0.25s ease",
@@ -226,7 +226,7 @@ export default function Model3D() {
     <div style={{
       width: "100%",
       background: T.pageBg,
-      fontFamily: "'DM Mono','Courier New',monospace",
+      fontFamily: "Nasalization",
       overflow: "hidden",
       transition: "background 0.4s ease",
     }}>
@@ -267,7 +267,7 @@ export default function Model3D() {
           fontWeight: 600, lineHeight: 1.06,
           letterSpacing: "-0.045em",
           color: T.headingColor,
-          fontFamily: "'Georgia','Times New Roman',serif",
+          fontFamily: "Nasalization",
           margin: "0 0 18px",
           transition: "color 0.4s ease",
         }}>
@@ -513,7 +513,7 @@ export default function Model3D() {
             background: T.ctaPrimBg, color: T.ctaPrimText,
             fontSize: "11px", letterSpacing: "2px", textTransform: "uppercase",
             textDecoration: "none", borderRadius: "8px",
-            fontFamily: "'DM Mono','Courier New',monospace",
+            fontFamily: "Nasalization",
             fontWeight: 600, transition: "all 0.25s ease",
           }}>
             Explore Coverage →
@@ -524,7 +524,7 @@ export default function Model3D() {
             border: `0.5px solid ${T.ctaSecBorder}`,
             fontSize: "11px", letterSpacing: "2px", textTransform: "uppercase",
             textDecoration: "none", borderRadius: "8px",
-            fontFamily: "'DM Mono','Courier New',monospace",
+            fontFamily: "Nasalization",
             transition: "all 0.25s ease",
           }}>
             View Solutions

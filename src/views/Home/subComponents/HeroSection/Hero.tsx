@@ -55,6 +55,7 @@ export const Hero: FC = () => {
         backgroundColor: bgColor,
         transition: "background-color 0.4s ease",
         px: { xs: "24px", sm: "48px", lg: "80px" },
+        fontFamily: "Nasalization"
       }}
     >
       <Stack alignItems="center" gap={3} sx={{ zIndex: 2, mt: { xs: "80px", md: 0 } }}>
@@ -101,7 +102,7 @@ export const Hero: FC = () => {
               fontSize: { xs: "52px", sm: "72px", md: "96px", xl: "112px" },
               fontWeight: 500, lineHeight: 0.95,
               color: primaryText,
-              letterSpacing: "-0.03em", fontFamily: "'Georgia', serif",
+              letterSpacing: "-0.03em", fontFamily: "Nasalization",
               transition: "color 0.4s ease",
             }}>
               Build
@@ -116,7 +117,7 @@ export const Hero: FC = () => {
             <Typography sx={{
               fontSize: { xs: "52px", sm: "72px", md: "96px", xl: "112px" },
               fontWeight: 500, lineHeight: 0.95, letterSpacing: "-0.03em",
-              fontFamily: "'Georgia', serif",
+              fontFamily: "Nasalization", 
               ...(isLight
                 ? { color: "#BBC0C6" }
                 : { color: "transparent", WebkitTextStroke: "1px rgba(255,244,227,0.35)" }

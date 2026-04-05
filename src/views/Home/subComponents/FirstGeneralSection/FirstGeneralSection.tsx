@@ -200,7 +200,7 @@ export const FirstGeneralSection: FC = () => {
               fontSize: { xs: "32px", sm: "44px", md: "56px" },
               fontWeight: 500, color: headlineColor,
               lineHeight: 1.1, letterSpacing: "-0.02em",
-              fontFamily: "'Georgia', serif", maxWidth: "520px",
+              fontFamily: "Nasalization" , maxWidth: "520px",
               transition: "color 0.4s ease",
             }}>
               We don't consult.{" "}
@@ -257,7 +257,7 @@ export const FirstGeneralSection: FC = () => {
                   color: hoveredIndex === i
                     ? `hsl(${p.hue * 360}, 70%, 45%)`
                     : indexColor,
-                  fontFamily: "monospace", mb: "20px",
+                  fontFamily: "Nasalization", mb: "20px",
                   letterSpacing: "0.04em",
                   transition: "color 0.3s ease",
                 }}>

@@ -189,7 +189,7 @@ const SectionLabel: FC<SectionLabelProps> = ({ label, index, T }) => (
   <Box sx={{ display: "flex", alignItems: "center", gap: "12px", mb: "24px" }}>
     <Typography sx={{
       fontSize: "11px", color: T.eyebrow,
-      fontWeight: 500, letterSpacing: "0.08em", fontFamily: "monospace",
+      fontWeight: 500, letterSpacing: "0.08em", fontFamily: "Nasalization" ,
       transition: "color 0.4s ease",
     }}>
       {index}
@@ -293,7 +293,7 @@ export const SecondImageSection: FC = () => {
                   fontSize: { xs: "28px", sm: "36px", md: "44px" },
                   fontWeight: 600, color: T.headline,
                   lineHeight: 1.1, letterSpacing: "-0.02em",
-                  fontFamily: "'Georgia', 'Times New Roman', serif",
+                  fontFamily: "Nasalization" ,
                   transition: "color 0.4s ease",
                 }}>
                   Intelligent extraction,{" "}
@@ -389,7 +389,7 @@ export const SecondImageSection: FC = () => {
               fontSize: { xs: "28px", sm: "40px", md: "52px" },
               fontWeight: 600, color: T.headline,
               lineHeight: 1.1, letterSpacing: "-0.02em",
-              fontFamily: "'Georgia', 'Times New Roman', serif",
+              fontFamily: "Nasalization",
               textAlign: "center", maxWidth: "640px", mb: "16px",
               transition: "color 0.4s ease",
             }}>
@@ -405,7 +405,7 @@ export const SecondImageSection: FC = () => {
               fontSize: { xs: "14px", sm: "16px" }, color: T.body,
               textAlign: "center", maxWidth: "480px",
               lineHeight: 1.75, mb: { xs: "40px", sm: "56px" },
-              fontFamily: "'Georgia', serif", fontStyle: "italic",
+              fontFamily: "Nasalization", fontStyle: "italic",
               transition: "color 0.4s ease",
             }}>
               Lorem Ipsum is simply dummy text of the printing and typesetting

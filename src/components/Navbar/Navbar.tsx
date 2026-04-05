@@ -12,22 +12,8 @@ import logoDark from "../../assets/darkLogo.png";
 import { useThemeMode } from "../../theme/theme";
 
 // ── Load Nasalization font ─────────────────────────────────────────────────────
-const nasalizationStyle = document.createElement("style");
-nasalizationStyle.textContent = `
-  @font-face {
-    font-family: 'Nasalization';
-    src: url('https://fonts.cdnfonts.com/s/16578/nasalization-rg.woff') format('woff');
-    font-weight: normal;
-    font-style: normal;
-    font-display: swap;
-  }
-`;
-if (!document.head.querySelector("[data-font='nasalization']")) {
-  nasalizationStyle.setAttribute("data-font", "nasalization");
-  document.head.appendChild(nasalizationStyle);
-}
 
-interface Props { window?: () => Window }
+
 const drawerWidth = 280;
 const navItems = ["About", "Products", "Solutions", "Resources", "Use Cases"];
 
@@ -57,7 +43,7 @@ const getTokens = (isDark: boolean) => ({
 
 // ── Shared font style ──────────────────────────────────────────────────────────
 const nasalizationFont = {
-  fontFamily: "'Nasalization', sans-serif",
+  fontFamily: "Nasalization",
   letterSpacing: "0.05em",
 };
 
@@ -127,7 +113,7 @@ const ThemeToggle: React.FC<{
 };
 
 // ── Main Navbar ───────────────────────────────────────────────────────────────
-export const Navbar: React.FC<Props> = (props) => {
+export const Navbar: React.FC<any> = (props) => {
   const { mode, toggleMode } = useThemeMode();
   const isDark = mode === "dark";
   const T = getTokens(isDark);

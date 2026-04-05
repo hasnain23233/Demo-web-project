@@ -194,7 +194,7 @@ export const SecondGeneralSection: FC = () => {
               fontSize: { xs: "36px", sm: "52px", md: "72px", lg: "88px" },
               fontWeight: 600, color: T.headline,
               lineHeight: 0.95, letterSpacing: "-0.03em",
-              fontFamily: "'Georgia', 'Times New Roman', serif",
+              fontFamily: "Nasalization",
               transition: "color 0.4s ease",
             }}>
               Ready to ship
@@ -205,7 +205,7 @@ export const SecondGeneralSection: FC = () => {
             <Typography sx={{
               fontSize: { xs: "36px", sm: "52px", md: "72px", lg: "88px" },
               fontWeight: 600, lineHeight: 0.95, letterSpacing: "-0.03em",
-              fontFamily: "'Georgia', 'Times New Roman', serif",
+              fontFamily: "Nasalization",
               ...(isDark
                 ? { color: "transparent", WebkitTextStroke: `1.5px ${T.headlineStroke}` }
                 : { color: T.headlineFaded }
@@ -222,7 +222,7 @@ export const SecondGeneralSection: FC = () => {
           <Typography sx={{
             fontSize: { xs: "14px", sm: "16px" }, color: T.subText,
             maxWidth: "440px", lineHeight: 1.8,
-            fontFamily: "'Georgia', serif", fontStyle: "italic",
+            fontFamily: "Nasalization" , fontStyle: "italic",
             transition: "color 0.4s ease",
           }}>
             We build architecture first, ship with discipline, and deliver

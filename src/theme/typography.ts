@@ -1,7 +1,7 @@
 import { TypographyOptions } from '@mui/material/styles/createTypography'
 
 const typography: TypographyOptions = {
-  fontFamily: ['Montserrat', 'sans-serif'].join(','),
+  fontFamily: ["Nasalization" , /*'Montserrat', 'sans-serif'*/].join(','),
   h2:{
    
     fontSize:'32px',

@@ -186,7 +186,7 @@ export const PageLoader = ({ onFinish }: Props) => {
                 fontWeight: 500,
                 color: "#fff",
                 letterSpacing: "-0.025em",
-                fontFamily: "'Georgia', serif",
+                fontFamily: "Nasalization" ,
                 margin: 0,
                 textShadow: "0 0 40px rgba(255,255,255,0.12)",
               }}
@@ -205,7 +205,7 @@ export const PageLoader = ({ onFinish }: Props) => {
                 letterSpacing: "0.22em",
                 textTransform: "uppercase",
                 margin: "10px 0 0",
-                fontFamily: "sans-serif",
+                fontFamily: "Nasalization",
               }}
             >
               AI-native software
@@ -236,7 +236,7 @@ export const PageLoader = ({ onFinish }: Props) => {
                   style={{ position: "absolute", left: 0, top: 0, height: "100%", background: "rgba(255,255,255,0.3)" }}
                 />
               </div>
-              <span style={{ fontSize: 10, color: "#333", letterSpacing: "0.1em", fontFamily: "monospace" }}>
+              <span style={{ fontSize: 10, color: "#333", letterSpacing: "0.1em", fontFamily: "Nasalization"  }}>
                 {pct}%
               </span>
             </motion.div>
