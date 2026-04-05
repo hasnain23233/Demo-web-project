@@ -5,46 +5,59 @@ import {
   Toolbar, Button,
 } from "@mui/material";
 import { LightMode, Brightness2, Close } from "@mui/icons-material";
-import { Link, useLocation } from "react-router-dom";
 import { MenuIconLight, MenuIconDark, RightArrow } from "../../assets/Icons";
 import logoLight from "../../assets/lightLogo.png";
 import logoDark from "../../assets/darkLogo.png";
 import { useThemeMode } from "../../theme/theme";
 
-// ── Load Nasalization font ─────────────────────────────────────────────────────
-
-
 const drawerWidth = 280;
-const navItems = ["About", "Products", "Solutions", "Resources", "Use Cases"];
+
+// ── Nav items now map to section IDs on the page ──────────────────────────────
+const navItems = [
+  { label: "About",     id: "about"     },
+  { label: "Products",  id: "products"  },
+  { label: "Solutions", id: "solutions" },
+  { label: "Resources", id: "resources" },
+  { label: "Use Cases", id: "use-cases" },
+];
 
 const getTokens = (isDark: boolean) => ({
-  scrolledBg:        isDark ? "rgba(22,22,22,0.92)"     : "rgba(255,244,227,0.92)",
-  border:            isDark ? "#2a2a2a"                  : "#d9c9b0",
-  textPrimary:       isDark ? "#FFF4E3"                  : "#001932",
-  textSecondary:     isDark ? "#BBC0C6"                  : "#4a4a6a",
-  surfaceSubtle:     isDark ? "#1e1e1e"                  : "#f0e8da",
-  activeDot:         isDark ? "#FFF4E3"                  : "#001932",
-  ctaBorder:         isDark ? "#2a2a2a"                  : "#d9c9b0",
-  ctaHoverBg:        isDark ? "#FFF4E3"                  : "#001932",
-  ctaHoverText:      isDark ? "#001932"                  : "#FFF4E3",
-  ctaHoverBorder:    isDark ? "#FFF4E3"                  : "#001932",
-  toggleBg:          isDark ? "#1e1e1e"                  : "#f0e8da",
-  toggleBorder:      isDark ? "#2a2a2a"                  : "#d9c9b0",
-  toggleBorderHover: isDark ? "#BBC0C6"                  : "#001932",
-  toggleKnob:        isDark ? "#FFF4E3"                  : "#001932",
-  toggleIcon:        isDark ? "#3a3a3a"                  : "#BBC0C6",
-  drawerBg:          isDark ? "#161616"                  : "#FFF4E3",
-  drawerBorder:      isDark ? "#2a2a2a"                  : "#d9c9b0",
-  drawerLinkBorder:  isDark ? "#2a2a2a"                  : "#d9c9b0",
-  drawerActiveLine:  isDark ? "#FFF4E3"                  : "#001932",
-  iconBtnBorder:     isDark ? "#2a2a2a"                  : "#d9c9b0",
-  iconBtnHoverBg:    isDark ? "#1e1e1e"                  : "#f0e8da",
+  scrolledBg:        isDark ? "rgba(22,22,22,0.92)"  : "rgba(255,244,227,0.92)",
+  border:            isDark ? "#2a2a2a"               : "#d9c9b0",
+  textPrimary:       isDark ? "#FFF4E3"               : "#001932",
+  textSecondary:     isDark ? "#BBC0C6"               : "#4a4a6a",
+  surfaceSubtle:     isDark ? "#1e1e1e"               : "#f0e8da",
+  activeDot:         isDark ? "#FFF4E3"               : "#001932",
+  ctaBorder:         isDark ? "#2a2a2a"               : "#d9c9b0",
+  ctaHoverBg:        isDark ? "#FFF4E3"               : "#001932",
+  ctaHoverText:      isDark ? "#001932"               : "#FFF4E3",
+  ctaHoverBorder:    isDark ? "#FFF4E3"               : "#001932",
+  toggleBg:          isDark ? "#1e1e1e"               : "#f0e8da",
+  toggleBorder:      isDark ? "#2a2a2a"               : "#d9c9b0",
+  toggleBorderHover: isDark ? "#BBC0C6"               : "#001932",
+  toggleKnob:        isDark ? "#FFF4E3"               : "#001932",
+  toggleIcon:        isDark ? "#3a3a3a"               : "#BBC0C6",
+  drawerBg:          isDark ? "#161616"               : "#FFF4E3",
+  drawerBorder:      isDark ? "#2a2a2a"               : "#d9c9b0",
+  drawerLinkBorder:  isDark ? "#2a2a2a"               : "#d9c9b0",
+  drawerActiveLine:  isDark ? "#FFF4E3"               : "#001932",
+  iconBtnBorder:     isDark ? "#2a2a2a"               : "#d9c9b0",
+  iconBtnHoverBg:    isDark ? "#1e1e1e"               : "#f0e8da",
 });
 
-// ── Shared font style ──────────────────────────────────────────────────────────
 const nasalizationFont = {
   fontFamily: "Nasalization",
   letterSpacing: "0.05em",
+};
+
+// ── Scroll helper ─────────────────────────────────────────────────────────────
+const scrollToSection = (id: string) => {
+  const el = document.getElementById(id);
+  if (el) {
+    const offset = 100; // adjust this value — navbar height + extra breathing room
+    const top = el.getBoundingClientRect().top + globalThis.scrollY - offset;
+    globalThis.scrollTo({ top, behavior: "smooth" });
+  }
 };
 
 // ── Theme toggle pill ─────────────────────────────────────────────────────────
@@ -119,24 +132,44 @@ export const Navbar: React.FC<any> = (props) => {
   const T = getTokens(isDark);
   const { window } = props;
 
-  const [mobileOpen, setMobileOpen] = useState(false);
-  const [scrolled, setScrolled]     = useState(false);
-  const location = useLocation();
+  const [mobileOpen, setMobileOpen]   = useState(false);
+  const [scrolled, setScrolled]       = useState(false);
+  const [activeId, setActiveId]       = useState("");
 
   const logo = isDark ? logoDark : logoLight;
 
-  const isActive = (item: string) =>
-    location.pathname === `/${item.toLowerCase().replace(/\s+/g, "-")}`;
-
+  // ── Track scroll position to highlight active section ─────────────────────
   useEffect(() => {
-    const onScroll = () => setScrolled(globalThis.scrollY > 20);
+    const onScroll = () => {
+      setScrolled(globalThis.scrollY > 20);
+
+      // Find which section is currently in view
+      const offsets = navItems
+        .map(({ id }) => {
+          const el = document.getElementById(id);
+          if (!el) return null;
+          return { id, top: el.getBoundingClientRect().top };
+        })
+        .filter(Boolean) as { id: string; top: number }[];
+
+     const filtered = offsets.filter((o) => o.top <= 120);
+      const current = filtered[filtered.length - 1];
+
+      setActiveId(current?.id ?? "");
+    };
+
     globalThis.addEventListener("scroll", onScroll, { passive: true });
     return () => globalThis.removeEventListener("scroll", onScroll);
   }, []);
 
   const handleDrawerToggle = () => setMobileOpen((p) => !p);
 
-  // ── Mobile drawer content ─────────────────────────────────────────────────
+  const handleNavClick = (id: string) => {
+    scrollToSection(id);
+    setMobileOpen(false);
+  };
+
+  // ── Mobile drawer ─────────────────────────────────────────────────────────
   const drawer = (
     <Box
       sx={{
@@ -148,20 +181,8 @@ export const Navbar: React.FC<any> = (props) => {
         transition: "background-color 0.4s ease",
       }}
     >
-      <Box
-        sx={{
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
-          mb: 4,
-        }}
-      >
-        <Box
-          component="img"
-          src={logo}
-          alt="logo"
-          sx={{ width: "100px", height: "auto" }}
-        />
+      <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", mb: 4 }}>
+        <Box component="img" src={logo} alt="logo" sx={{ width: "100px", height: "auto" }} />
         <IconButton
           onClick={handleDrawerToggle}
           aria-label="Close navigation"
@@ -179,53 +200,38 @@ export const Navbar: React.FC<any> = (props) => {
       </Box>
 
       <List sx={{ flex: 1, p: 0 }}>
-        {navItems.map((item) => {
-          const active = isActive(item);
+        {navItems.map(({ label, id }) => {
+          const active = activeId === id;
           return (
-            <ListItem key={item} disablePadding>
+            <ListItem key={id} disablePadding>
               <ListItemButton
-                component={Link}
-                to={`/${item.toLowerCase().replace(/\s+/g, "-")}`}
-                onClick={handleDrawerToggle}
+                onClick={() => handleNavClick(id)}
                 sx={{
                   py: "14px",
                   px: 0,
                   borderBottom: `0.5px solid ${T.drawerLinkBorder}`,
                   color: active ? T.textPrimary : T.textSecondary,
-                  "&:hover": {
-                    backgroundColor: "transparent",
-                    color: T.textPrimary,
-                  },
+                  "&:hover": { backgroundColor: "transparent", color: T.textPrimary },
                   "& .MuiListItemText-primary": {
                     fontSize: "13px",
                     fontWeight: active ? 500 : 400,
                     color: "inherit",
                     transition: "color 0.2s ease",
-                    // ── Nasalization applied to mobile nav links ──
                     ...nasalizationFont,
                   },
                 }}
               >
-                <Box
-                  sx={{
-                    display: "flex",
-                    alignItems: "center",
-                    gap: 1.5,
-                    width: "100%",
-                  }}
-                >
+                <Box sx={{ display: "flex", alignItems: "center", gap: 1.5, width: "100%" }}>
                   <Box
                     sx={{
                       width: "20px",
                       height: "1px",
-                      backgroundColor: active
-                        ? T.drawerActiveLine
-                        : T.drawerLinkBorder,
+                      backgroundColor: active ? T.drawerActiveLine : T.drawerLinkBorder,
                       flexShrink: 0,
                       transition: "background-color 0.2s ease",
                     }}
                   />
-                  <ListItemText primary={item} />
+                  <ListItemText primary={label} />
                 </Box>
               </ListItemButton>
             </ListItem>
@@ -235,9 +241,7 @@ export const Navbar: React.FC<any> = (props) => {
 
       <Box sx={{ mt: 3, display: "flex", flexDirection: "column", gap: 2 }}>
         <Button
-          component={Link}
-          to="/contact"
-          onClick={handleDrawerToggle}
+          onClick={() => handleNavClick("contact")}
           endIcon={<RightArrow />}
           sx={{
             width: "100%",
@@ -248,7 +252,6 @@ export const Navbar: React.FC<any> = (props) => {
             fontSize: "12px",
             fontWeight: 500,
             textTransform: "none",
-            // ── Nasalization applied to mobile CTA ──
             ...nasalizationFont,
             transition: "background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease",
             "&:hover": {
@@ -265,8 +268,7 @@ export const Navbar: React.FC<any> = (props) => {
     </Box>
   );
 
-  const container =
-    window !== undefined ? () => window().document.body : undefined;
+  const container = window !== undefined ? () => window().document.body : undefined;
 
   return (
     <Box sx={{ display: "flex" }}>
@@ -294,15 +296,10 @@ export const Navbar: React.FC<any> = (props) => {
             alignItems: "center",
           }}
         >
-          {/* Logo */}
+          {/* Logo — scrolls back to top */}
           <Box
-            component={Link}
-            to="/"
-            sx={{
-              display: "flex",
-              alignItems: "center",
-              textDecoration: "none",
-            }}
+            onClick={() => globalThis.scrollTo({ top: 0, behavior: "smooth" })}
+            sx={{ display: "flex", alignItems: "center", cursor: "pointer" }}
           >
             <Box
               component="img"
@@ -318,20 +315,13 @@ export const Navbar: React.FC<any> = (props) => {
           </Box>
 
           {/* Desktop nav links */}
-          <Box
-            sx={{
-              display: { xs: "none", md: "flex" },
-              alignItems: "center",
-              gap: "2px",
-            }}
-          >
-            {navItems.map((item) => {
-              const active = isActive(item);
+          <Box sx={{ display: { xs: "none", md: "flex" }, alignItems: "center", gap: "2px" }}>
+            {navItems.map(({ label, id }) => {
+              const active = activeId === id;
               return (
                 <Button
-                  key={item}
-                  component={Link}
-                  to={`/${item.toLowerCase().replace(/\s+/g, "-")}`}
+                  key={id}
+                  onClick={() => handleNavClick(id)}
                   disableRipple
                   sx={{
                     color: active ? T.textPrimary : T.textSecondary,
@@ -342,13 +332,9 @@ export const Navbar: React.FC<any> = (props) => {
                     py: "7px",
                     borderRadius: "6px",
                     minWidth: 0,
-                    // ── Nasalization applied to desktop nav links ──
                     ...nasalizationFont,
                     transition: "color 0.2s ease, background-color 0.2s ease",
-                    "&:hover": {
-                      color: T.textPrimary,
-                      backgroundColor: T.surfaceSubtle,
-                    },
+                    "&:hover": { color: T.textPrimary, backgroundColor: T.surfaceSubtle },
                     position: "relative",
                     "&::after": active
                       ? {
@@ -365,25 +351,17 @@ export const Navbar: React.FC<any> = (props) => {
                       : { content: '""' },
                   }}
                 >
-                  {item}
+                  {label}
                 </Button>
               );
             })}
           </Box>
 
           {/* Desktop right: toggle + CTA */}
-          <Box
-            sx={{
-              display: { xs: "none", md: "flex" },
-              alignItems: "center",
-              gap: "14px",
-            }}
-          >
+          <Box sx={{ display: { xs: "none", md: "flex" }, alignItems: "center", gap: "14px" }}>
             <ThemeToggle mode={mode} onToggle={toggleMode} isDark={isDark} />
-
             <Button
-              component={Link}
-              to="/contact"
+              onClick={() => handleNavClick("contact")}
               endIcon={<RightArrow />}
               sx={{
                 px: "18px",
@@ -394,7 +372,6 @@ export const Navbar: React.FC<any> = (props) => {
                 fontSize: "12px",
                 fontWeight: 500,
                 textTransform: "none",
-                // ── Nasalization applied to desktop CTA ──
                 ...nasalizationFont,
                 transition: "background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease, transform 0.15s ease",
                 "&:hover": {

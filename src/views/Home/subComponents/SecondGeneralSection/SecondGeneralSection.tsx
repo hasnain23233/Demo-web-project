@@ -50,7 +50,7 @@ function useInView(threshold = 0.15) {
 // ── Animated reveal wrapper ───────────────────────────────────────────────────
 interface RevealProps {
   children: React.ReactNode;
-  delay?: number;   // ms
+  delay?: number;
   from?: "bottom" | "left" | "right" | "scale";
 }
 const Reveal: FC<RevealProps> = ({ children, delay = 0, from = "bottom" }) => {
@@ -81,14 +81,11 @@ const AnimatedNumber: FC<{ target: string; color: string; visible: boolean; dela
 }) => {
   const [display, setDisplay] = useState("0");
 
-  // Derived values computed outside the effect so they are stable references
-  // and can be safely listed in the dependency array.
-  const numMatch   = /^\d+/.test(target);
-  const num        = numMatch ? parseInt(target, 10) : 0;
-  const suffix     = target.replace(/^\d+/, ""); // e.g. "+" or " wks" or ""
+  const numMatch = /^\d+/.test(target);
+  const num      = numMatch ? parseInt(target, 10) : 0;
+  const suffix   = target.replace(/^\d+/, "");
 
   useEffect(() => {
-    // Non-numeric targets (e.g. "6 wks" won't parse cleanly) — show as-is.
     if (!visible) return;
     if (!numMatch) { setDisplay(target); return; }
 
@@ -106,7 +103,6 @@ const AnimatedNumber: FC<{ target: string; color: string; visible: boolean; dela
 
     const timer = setTimeout(() => { rafId = requestAnimationFrame(step); }, delay);
 
-    // Cleanup: cancel both the timeout and any pending RAF
     return () => {
       clearTimeout(timer);
       cancelAnimationFrame(rafId);
@@ -131,7 +127,6 @@ export const SecondGeneralSection: FC = () => {
   const isDark = mode === "dark";
   const T = getTokens(isDark);
 
-  // Stats counter fires once when the strip enters view
   const { ref: statsRef, visible: statsVisible } = useInView(0.3);
 
   const STATS = [
@@ -142,6 +137,7 @@ export const SecondGeneralSection: FC = () => {
 
   return (
     <Box
+     id="contact"
       sx={{
         backgroundColor: T.bg,
         borderTop: `0.5px solid ${T.border}`,
@@ -174,7 +170,7 @@ export const SecondGeneralSection: FC = () => {
       }} />
 
       {/* Content */}
-      <Stack alignItems="center" textAlign="center" gap={4} sx={{ position: "relative", zIndex: 2 }}>
+      <Stack alignItems="center" textAlign="center" gap={5} sx={{ position: "relative", zIndex: 2 }}>
 
         {/* Eyebrow */}
         <Reveal delay={0}>
@@ -188,12 +184,13 @@ export const SecondGeneralSection: FC = () => {
         </Reveal>
 
         {/* Headline block */}
-        <Box>
+        <Box sx={{ mb: 1 }}>
           <Reveal delay={80}>
             <Typography sx={{
               fontSize: { xs: "36px", sm: "52px", md: "72px", lg: "88px" },
               fontWeight: 600, color: T.headline,
-              lineHeight: 0.95, letterSpacing: "-0.03em",
+              lineHeight: 1.05,
+              letterSpacing: "-0.03em",
               fontFamily: "Nasalization",
               transition: "color 0.4s ease",
             }}>
@@ -204,7 +201,9 @@ export const SecondGeneralSection: FC = () => {
           <Reveal delay={160}>
             <Typography sx={{
               fontSize: { xs: "36px", sm: "52px", md: "72px", lg: "88px" },
-              fontWeight: 600, lineHeight: 0.95, letterSpacing: "-0.03em",
+              fontWeight: 500,
+              lineHeight: 1.05,
+              letterSpacing: "-0.03em",
               fontFamily: "Nasalization",
               ...(isDark
                 ? { color: "transparent", WebkitTextStroke: `1.5px ${T.headlineStroke}` }
@@ -221,8 +220,9 @@ export const SecondGeneralSection: FC = () => {
         <Reveal delay={240}>
           <Typography sx={{
             fontSize: { xs: "14px", sm: "16px" }, color: T.subText,
-            maxWidth: "440px", lineHeight: 1.8,
-            fontFamily: "Nasalization" , fontStyle: "italic",
+            maxWidth: "560px",
+            lineHeight: 1.8,
+            fontFamily: "Nasalization", fontStyle: "italic",
             transition: "color 0.4s ease",
           }}>
             We build architecture first, ship with discipline, and deliver
@@ -289,7 +289,7 @@ export const SecondGeneralSection: FC = () => {
         <Box
           ref={statsRef}
           sx={{
-            mt: "16px", pt: "32px",
+            mt: "32px", pt: "32px",
             borderTop: `0.5px solid ${T.statsDivider}`,
             width: "100%", maxWidth: "560px",
             display: "flex", justifyContent: "center",

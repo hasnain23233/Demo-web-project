@@ -276,10 +276,10 @@ export const SecondImageSection: FC = () => {
         backgroundSize: "60px 60px",
       }} />
 
-      <Box sx={{ position: "relative", zIndex: 1 }}>
+      <Box   sx={{ position: "relative", zIndex: 1 }}>
 
         {/* ══ BLOCK 1 — Text left, Image right ══════════════════════════════ */}
-        <Grid container spacing={{ xs: 6, md: 10 }} alignItems="center">
+        <Grid id="resources" container spacing={{ xs: 6, md: 10 }} alignItems="center">
 
           {/* Left: text */}
           <Grid size={{ xs: 12, md: 6 }}>
@@ -357,7 +357,7 @@ export const SecondImageSection: FC = () => {
               cardBg={T.cardBg}
               boxShadow={T.boxShadow}
               delay={200}
-              maxW={{ xs: "100%", md: "100%" }}
+              maxW={{ xs: "90%", md: "90%" }}
             />
           </Grid>
         </Grid>
@@ -371,7 +371,7 @@ export const SecondImageSection: FC = () => {
         }} />
 
         {/* ══ BLOCK 2 — Centred heading + side-by-side images ════════════════ */}
-        <Stack direction="column" alignItems="center" gap={0}>
+        <Stack id="use-cases" direction="column" alignItems="center" gap={0}>
 
           <Reveal delay={0}>
             <Typography sx={{

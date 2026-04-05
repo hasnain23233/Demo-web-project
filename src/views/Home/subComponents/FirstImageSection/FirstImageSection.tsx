@@ -3,8 +3,7 @@ import { Box, Stack, Typography } from "@mui/material";
 import * as THREE from "three";
 import { Snowflake, Sparkles } from "lucide-react";
 import { useThemeMode } from "../../../../theme/theme";
-import lightModeImg from "../../../../assets/Images/CodeImages/CodeImageOneLight.gif";
-import darkModeImg  from "../../../../assets/Images/CodeImages/Code2ImageDark.gif";
+import AgentTerminal from "../../../../components/AgentTerminal/AgentTerminal";
 import { PerformanceNodes } from "../../../../components/model3DAnimation";
 
 // ── Theme tokens ─────────────────────────────────────────────────────────────
@@ -208,152 +207,141 @@ export const FirstImageSection: FC = () => {
     }}>
 
       {/* ══ BLOCK 1 — Bento grid ══ */}
-      <Box sx={{
-        display: "grid",
-        gridTemplateColumns: { xs: "1fr", md: "1fr 1fr", lg: "5fr 4fr" },
-        gap: "1px",
-        backgroundColor: T.border,
-        border: `2px solid ${T.gridBorder}`,
-        borderRadius: "20px",
-        overflow: "hidden",
-        boxShadow: T.boxShadow,
-        transition: "border-color 0.4s ease, background-color 0.4s ease",
+<Box id="about" sx={{
+  
+  display: "grid",
+  gridTemplateColumns: { xs: "1fr", md: "1fr 1fr", lg: "5fr 4fr" },
+  gap: "1px",
+  backgroundColor: T.border,
+  border: `1px solid ${T.gridBorder}`,        // 0.5px → 1px (Windows safe)
+  borderRadius: "20px",
+  overflow: "hidden",
+  boxShadow: T.boxShadow,
+  isolation: "isolate",                        // fixes border-radius clipping on Chrome/Windows
+  transition: "border-color 0.4s ease, background-color 0.4s ease",
+}}>
+
+  {/* Cell: Heading + text */}
+  <Box sx={{
+    backgroundColor: T.bg,
+    p: { xs: "32px", sm: "40px", md: "48px" },
+    display: "flex", flexDirection: "column",
+    justifyContent: "space-between", gap: "32px",
+    position: "relative",
+    transition: "background-color 0.4s ease",
+  }}>
+    <TopGlow tokens={T} />
+
+    <Box sx={{ display: "flex", alignItems: "center", gap: "10px" }}>
+      <Typography sx={{ fontSize: "11px", color: T.secondaryText, fontFamily: "Nasalization", letterSpacing: "0.06em" }}>01</Typography>
+      <Box sx={{ width: "40px", height: "1px", backgroundColor: T.stroke }} /> {/* 0.5px → 1px */}
+      <Typography sx={{ fontSize: "11px", color: T.secondaryText, textTransform: "uppercase", letterSpacing: "0.08em", fontWeight: 500 }}>
+        How it works
+      </Typography>
+    </Box>
+
+    <Box>
+      <Typography sx={{
+        fontSize: { xs: "30px", sm: "38px", md: "46px", lg: "52px" },
+        fontWeight: 500, color: T.primaryText,
+        lineHeight: 1.1, letterSpacing: "-0.025em",
+        fontFamily: "Nasalization", mb: "12px",
+        transition: "color 0.4s ease",
       }}>
+        Built for scale,
+      </Typography>
+      <Typography sx={{
+        fontSize: { xs: "30px", sm: "38px", md: "46px", lg: "52px" },
+        fontWeight: 500, lineHeight: 1.1,
+        letterSpacing: "-0.025em", fontFamily: "Nasalization",
+        color: T.fadedText, transition: "color 0.4s ease",
+      }}>
+        not just for demos.
+      </Typography>
+    </Box>
 
-        {/* Cell: Heading + text */}
-        <Box sx={{
-          backgroundColor: T.bg,
-          p: { xs: "32px", sm: "40px", md: "48px" },
-          display: "flex", flexDirection: "column",
-          justifyContent: "space-between", gap: "32px",
-          position: "relative",
-          transition: "background-color 0.4s ease",
-        }}>
-          <TopGlow tokens={T} />
+    <Typography sx={{ fontSize: "15px", color: T.secondaryText, lineHeight: 1.8, maxWidth: "420px", transition: "color 0.4s ease" }}>
+      Deploy production-grade code with automated icy particle pipelines. Maintain a rigid architectural core while harnessing the flow of AI generation.
+    </Typography>
 
-          <Box sx={{ display: "flex", alignItems: "center", gap: "10px" }}>
-            <Typography sx={{ fontSize: "11px", color: T.secondaryText, fontFamily: "Nasalization", letterSpacing: "0.06em" }}>01</Typography>
-            <Box sx={{ width: "40px", height: "0.5px", backgroundColor: T.stroke }} />
-            <Typography sx={{ fontSize: "11px", color: T.secondaryText, textTransform: "uppercase", letterSpacing: "0.08em", fontWeight: 500 }}>
-              How it works
-            </Typography>
-          </Box>
-
-          <Box>
-            <Typography sx={{
-              fontSize: { xs: "30px", sm: "38px", md: "46px", lg: "52px" },
-              fontWeight: 500, color: T.primaryText,
-              lineHeight: 1.1, letterSpacing: "-0.025em",
-              fontFamily: "Nasalization" , mb: "12px",
-              transition: "color 0.4s ease",
-            }}>
-              Built for scale,
-            </Typography>
-            <Typography sx={{
-              fontSize: { xs: "30px", sm: "38px", md: "46px", lg: "52px" },
-              fontWeight: 500, lineHeight: 1.1,
-              letterSpacing: "-0.025em", fontFamily: "Nasalization",
-              color: T.fadedText, transition: "color 0.4s ease",
-            }}>
-              not just for demos.
-            </Typography>
-          </Box>
-
-          <Typography sx={{ fontSize: "15px", color: T.secondaryText, lineHeight: 1.8, maxWidth: "420px", transition: "color 0.4s ease" }}>
-            Deploy production-grade code with automated icy particle pipelines. Maintain a rigid architectural core while harnessing the flow of AI generation.
-          </Typography>
-
-          <Box sx={{ display: "flex", flexWrap: "wrap", gap: "8px" }}>
-            {["Production-grade", "Scalable", "AI-native"].map((tag) => (
-              <Box key={tag} sx={{
-                px: "12px", py: "5px",
-                border: `0.5px solid ${T.pillBorder}`,
-                borderRadius: "99px",
-                backgroundColor: T.tagBg,
-                transition: "background-color 0.4s ease, border-color 0.4s ease",
-              }}>
-                <Typography sx={{ fontSize: "12px", color: T.secondaryText, transition: "color 0.4s ease" }}>
-                  {tag}
-                </Typography>
-              </Box>
-            ))}
-          </Box>
-        </Box>
-
-        {/* Cell: frost-nodes animation + image */}
-        <Box sx={{
-          backgroundColor: T.cardBg,
-          position: "relative",
-          display: "flex", flexDirection: "column",
-          alignItems: "center", justifyContent: "center",
-          p: { xs: "28px", sm: "32px" },
-          minHeight: { xs: "300px", md: "420px" },
-          overflow: "hidden",
-          transition: "background-color 0.4s ease",
-        }}>
-          <TopGlow tokens={T} />
-          <Box sx={{
-            position: "absolute", top: "40%", left: "50%",
-            transform: "translate(-50%, -50%)",
-            width: "280px", height: "280px",
-            background: `radial-gradient(ellipse, ${T.accentGlow} 0%, transparent 65%)`,
-            pointerEvents: "none",
-          }} />
-          <ColdAnimation type="frost-nodes" isDark={isDark} />
-          <Box
-            component="img"
-            src={isDark ? darkModeImg : lightModeImg}
-            alt="Code preview"
-            sx={{
-              position: "absolute", top: "50%", left: "50%",
-              transform: "translate(-50%, -50%)",
-              width: { xs: "70%", sm: "75%", md: "70%" },
-              height: "auto", borderRadius: "10px",
-              zIndex: 10, pointerEvents: "none",
-              opacity: 0.92, transition: "opacity 0.4s ease",
-            }}
-          />
-          <Box sx={{ zIndex: 12, position: "absolute", bottom: "16px", left: "16px", display: "flex", alignItems: "center", gap: "6px" }}>
-            <Snowflake size={13} color={T.accent} />
-            <Typography sx={{ fontSize: "10px", color: T.accent, fontFamily: "Nasalization", letterSpacing: "0.06em" }}>
-              LIVE: COLD FROST NODES SYSTEM
-            </Typography>
-          </Box>
-        </Box>
-
-        {/* Cell: Stats row */}
-        <Box sx={{
-          backgroundColor: T.cardBgAlt,
-          gridColumn: { xs: "1", md: "1 / -1" },
-          p: { xs: "24px 32px", sm: "28px 48px" },
-          display: "flex", flexDirection: { xs: "column", sm: "row" },
-          borderTop: `0.5px solid ${T.border}`,
+    <Box sx={{ display: "flex", flexWrap: "wrap", gap: "8px" }}>
+      {["Production-grade", "Scalable", "AI-native"].map((tag) => (
+        <Box key={tag} sx={{
+          px: "12px", py: "5px",
+          border: `1px solid ${T.pillBorder}`,   // 0.5px → 1px
+          borderRadius: "99px",
+          backgroundColor: T.tagBg,
           transition: "background-color 0.4s ease, border-color 0.4s ease",
         }}>
-          {[
-            { num: "50+",    label: "Products shipped" },
-            { num: "40–60%", label: "Faster delivery"  },
-            { num: "100%",   label: "Human reviewed"   },
-            { num: "0",      label: "Vibe-coded lines"  },
-          ].map(({ num, label }, i) => (
-            <Box key={label} sx={{
-              flex: 1,
-              px: { xs: "0", sm: "24px" },
-              py: { xs: "16px", sm: "8px" },
-              borderLeft: { xs: "none", sm: i === 0 ? "none" : `0.5px solid ${T.border}` },
-              borderTop:  { xs: i === 0 ? "none" : `0.5px solid ${T.border}`, sm: "none" },
-              transition: "border-color 0.4s ease",
-            }}>
-              <Typography sx={{ fontSize: { xs: "20px", sm: "24px" }, fontWeight: 500, color: T.primaryText, lineHeight: 1, mb: "6px", transition: "color 0.4s ease" }}>
-                {num}
-              </Typography>
-              <Typography sx={{ fontSize: "11px", color: T.secondaryText, letterSpacing: "0.04em", transition: "color 0.4s ease" }}>
-                {label}
-              </Typography>
-            </Box>
-          ))}
+          <Typography sx={{ fontSize: "12px", color: T.secondaryText, transition: "color 0.4s ease" }}>
+            {tag}
+          </Typography>
         </Box>
+      ))}
+    </Box>
+  </Box>
+
+  {/* Cell: frost-nodes animation + image */}
+  <Box  sx={{
+    backgroundColor: T.cardBg,
+    position: "relative",
+    display: "flex", flexDirection: "column",
+    alignItems: "center", justifyContent: "center",
+    p: { xs: "28px", sm: "32px" },
+    minHeight: { xs: "300px", md: "420px" },
+    overflow: "hidden",
+    transition: "background-color 0.4s ease",
+  }}>
+    <TopGlow tokens={T} />
+    <Box sx={{
+      position: "absolute", top: "40%", left: "50%",
+      transform: "translate(-50%, -50%)",
+      width: "280px", height: "280px",
+      background: `radial-gradient(ellipse, ${T.accentGlow} 0%, transparent 65%)`,
+      pointerEvents: "none",
+    }} />
+    <ColdAnimation type="frost-nodes" isDark={isDark} />
+    <AgentTerminal />
+    <Box sx={{ zIndex: 12, position: "absolute", bottom: "16px", left: "16px", display: "flex", alignItems: "center", gap: "6px" }}>
+      <Snowflake size={13} color={T.accent} />
+      <Typography sx={{ fontSize: "10px", color: T.accent, fontFamily: "Nasalization", letterSpacing: "0.06em" }}>
+        LIVE: COLD FROST NODES SYSTEM
+      </Typography>
+    </Box>
+  </Box>
+
+  {/* Cell: Stats row */}
+  <Box sx={{
+    backgroundColor: T.cardBgAlt,
+    gridColumn: { xs: "1", md: "1 / -1" },
+    p: { xs: "24px 32px", sm: "28px 48px" },
+    display: "flex", flexDirection: { xs: "column", sm: "row" },
+    borderTop: `1px solid ${T.border}`,         // 0.5px → 1px
+    transition: "background-color 0.4s ease, border-color 0.4s ease",
+  }}>
+    {[
+      { num: "50+",    label: "Products shipped" },
+      { num: "40–60%", label: "Faster delivery"  },
+      { num: "100%",   label: "Human reviewed"   },
+    ].map(({ num, label }, i) => (
+      <Box key={label} sx={{
+        flex: 1,
+        px: { xs: "0", sm: "24px" },
+        py: { xs: "16px", sm: "8px" },
+        borderLeft: { xs: "none", sm: i === 0 ? "none" : `1px solid ${T.border}` },  // 0.5px → 1px
+        borderTop:  { xs: i === 0 ? "none" : `1px solid ${T.border}`, sm: "none" },  // 0.5px → 1px
+        transition: "border-color 0.4s ease",
+      }}>
+        <Typography sx={{ fontSize: { xs: "20px", sm: "24px" }, fontWeight: 500, color: T.primaryText, lineHeight: 1, mb: "6px", transition: "color 0.4s ease" }}>
+          {num}
+        </Typography>
+        <Typography sx={{ fontSize: "11px", color: T.secondaryText, letterSpacing: "0.04em", transition: "color 0.4s ease" }}>
+          {label}
+        </Typography>
       </Box>
+    ))}
+  </Box>
+</Box>
 
       {/* ══ DIVIDER ══ */}
       <Box sx={{ my: { xs: "72px", sm: "96px", md: "120px" }, display: "flex", alignItems: "center", gap: "20px" }}>
@@ -363,7 +351,7 @@ export const FirstImageSection: FC = () => {
       </Box>
 
       {/* ══ BLOCK 2 — Split card ══ */}
-      <Box sx={{
+      <Box id="products" sx={{
         display: "grid",
         gridTemplateColumns: { xs: "1fr", md: "1fr 1fr" },
         gap: "1px",

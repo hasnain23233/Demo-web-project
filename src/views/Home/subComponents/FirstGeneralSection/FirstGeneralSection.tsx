@@ -5,23 +5,23 @@ import { useThemeMode } from "../../../../theme/theme";
 
 const PRINCIPLES = [
   {
-    index: "01", title: "Ship or die.",
-    body: "Every engagement ends with working software in the wild — not a prototype collecting dust.",
+    index: "01", title: "Identify the Problem",
+    body: "We pinpoint the exact bottlenecks and technical challenges holding your business back.",
     hue: 0.1, speed: 3.0,
   },
   {
-    index: "02", title: "AI-first, always.",
-    body: "Intelligence isn't a feature. It's the foundation, wired into every product from day one.",
+    index: "02", title: "Architect.",
+    body: "We design a smart, scalable solution tailored specifically to your needs and goals.",
     hue: 0.5, speed: 6.0,
   },
   {
-    index: "03", title: "Radical ownership.",
-    body: "We treat your roadmap like it's ours. No ticket-pushers — just engineers who give a damn.",
+    index: "03", title: "Build.",
+    body: "We develop and code high-quality, reliable technology with precision and efficiency.",
     hue: 0.8, speed: 1.5,
   },
   {
-    index: "04", title: "Results, not reports.",
-    body: "You measure us by working software, not status updates. Done when it ships and works.",
+    index: "04", title: "Deliver.",
+    body: "We launch your solution and ensure it drives real results for your business.",
     hue: 0.3, speed: 4.5,
   },
 ];
@@ -160,7 +160,7 @@ export const FirstGeneralSection: FC = () => {
   }, [hoveredIndex, mode]);
 
   return (
-    <Box sx={{
+    <Box id="solutions" sx={{
       backgroundColor: bgColor,
       borderTop:    `0.5px solid ${borderColor}`,
       borderBottom: `0.5px solid ${borderColor}`,
@@ -203,7 +203,7 @@ export const FirstGeneralSection: FC = () => {
               fontFamily: "Nasalization" , maxWidth: "520px",
               transition: "color 0.4s ease",
             }}>
-              We don't consult.{" "}
+              We consult and{" "}
               <Box component="span" sx={{ color: headlineFaded, transition: "color 0.4s ease" }}>
                 We build.
               </Box>
