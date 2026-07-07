@@ -84,6 +84,7 @@ Build for production
 ```bash
 npm run build
 ```
+<img width="1919" height="879" alt="image" src="https://github.com/user-attachments/assets/4e4c26a7-0d23-45bb-8d1d-8e0d7f244fdc" />
 
 ---
 
@@ -105,6 +106,8 @@ npm run build
 **LinkedIn:** https://www.linkedin.com/in/hasnain-khushi-web-developer/
 
 Open to new opportunities and collaborations — feel free to connect or reach out!
+<img width="1917" height="911" alt="image" src="https://github.com/user-attachments/assets/b517f51d-8c94-4953-b992-78f724b53e01" />
+
 
 ---
 
